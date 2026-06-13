@@ -868,6 +868,8 @@ let searchHistoryList=JSON.parse(localStorage.getItem('moxiang_search_history')|
 let readerFontSize=parseInt(localStorage.getItem('moxiang_fontsize')||'18');
 let readerLineHeight=parseFloat(localStorage.getItem('moxiang_lineheight')||'1.8');
 let readerTheme=localStorage.getItem('moxiang_theme')||'sepia';
+// BUGFIX: 修复readerSettings变量未定义问题
+let readerSettings=JSON.parse(localStorage.getItem('moxiang_reader')||'{"fontSize":18,"lineHeight":1.8,"theme":"sepia"}');
 let isLoginMode=true,bannerIndex=0,bannerTimer=null;
 let ttsUtterance=null,ttsPaused=false,currentParaIndex=0;
 let currentParaCommentsNid=null,currentParaCommentsIdx=null;
@@ -2287,6 +2289,40 @@ async function initMoxiangApp(){
   const nid=new URLSearchParams(location.search).get('novel');
   if(nid){const n=getNovel(nid);if(n)openDetail(nid);}
 }
+// ========== OPTIMIZE: 性能优化增强 ==========
+// 1. TTS播放状态管理优化
+let ttsIsPlaying=false,ttsIsPaused=false;
+const origStartTTS=startTTS,origPauseTTS=pauseTTS,origStopTTS=stopTTS;
+startTTS=function(){if(ttsIsPlaying&&!ttsIsPaused){toast('正在播放中');return;}origStartTTS();ttsIsPlaying=true;ttsIsPaused=false;};
+pauseTTS=function(){origPauseTTS();ttsIsPaused=!ttsIsPaused;};
+stopTTS=function(){origStopTTS();ttsIsPlaying=false;ttsIsPaused=false;};
+
+// 2. LocalStorage防抖优化
+const debounce=function(fn,delay){let t;return function(){clearTimeout(t);t=setTimeout(()=>fn.apply(this,arguments),delay);};};
+const origSaveShelf=saveShelf,origSaveRead=saveRead,origSaveSettings=saveSettings;
+saveShelf=debounce(origSaveShelf,300);
+saveRead=debounce(origSaveRead,300);
+saveSettings=debounce(origSaveSettings,300);
+
+// 3. DOM元素缓存优化
+const domCache={};
+function getElement(id){if(!domCache[id])domCache[id]=document.getElementById(id);return domCache[id];}
+
+// 4. 图片加载容错优化
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('img').forEach(img=>{
+    img.onerror=function(){this.style.display='none';};
+    img.loading='lazy';
+  });
+});
+
+// 5. CSS动画硬件加速优化
+const style=document.createElement('style');
+style.textContent='.banner-slide,.nav-item,.tab,.btn-primary,.btn-outline{transform:translateZ(0);backface-visibility:hidden;perspective:1000px;will-change:transform,opacity;}';
+document.head.appendChild(style);
+
+// ========== END OPTIMIZE ==========
+
 initMoxiangApp();
 </script>
 </body>
