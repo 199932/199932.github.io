@@ -515,7 +515,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
 
 <div class="page active" id="page-home">
   <div class="top-bar">
-    <div class="logo"><img src="./moxiang-icon.png" style="height:28px;width:28px;border-radius:6px;vertical-align:middle;margin-right:4px" alt="墨香阁">墨香阁</div>
+    <div class="logo"><img src="https://aka.doubaocdn.com/s/Vgwt1waoXJ" style="height:28px;width:28px;border-radius:6px;vertical-align:middle;margin-right:4px" alt="墨香阁">墨香阁</div>
     <div class="search-trigger" onclick="showPage('search')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       搜索故事、作者
@@ -528,7 +528,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
     <div class="tab" data-tab="new">最新</div>
   </div>
   <div class="momo-welcome" id="momo-welcome">
-    <img src="./momo-small.png" alt="momo">
+    <img src="https://aka.doubaocdn.com/s/wgpq1waoXJ" alt="momo" style="width:48px;height:48px;border-radius:50%;object-fit:cover">
     <div class="welcome-text"><strong>momo</strong> 欢迎来到墨香阁！<br>这里每一篇故事都是原创短篇，6分钟读完一个好故事</div>
   </div>
   <div id="home-content"></div>
@@ -1549,7 +1549,7 @@ function renderShelf(){
     displayShelf=shelf.filter(s=>downloaded.includes(s.id));
   }
   document.getElementById('shelf-count').textContent=displayShelf.length+'篇';
-  if(!displayShelf.length){c.innerHTML='<div class="momo-empty"><p>书架还空空的，快去发现好故事吧！</p><button onclick="showPage(\'home\')">去逛逛</button></div>';return}
+  if(!displayShelf.length){c.innerHTML='<div class="momo-empty"><img src="https://aka.doubaocdn.com/s/HVnu1waoXJ" alt="momo"><p>书架还空空的，快去发现好故事吧！</p><button onclick="showPage(\'home\')">去逛逛</button></div>';return}
   c.innerHTML='<div class="shelf-grid">'+displayShelf.map(s=>{const n=getNovel(s.id)||s;return'<div class="shelf-item" onclick="openDetail('+s.id+')"><div class="novel-cover">'+coverHTML(n)+(isOffline(s.id)?'<div class="offline-badge">已下载</div>':'')+'</div><div class="novel-title">'+n.title+'</div><div class="last-read">'+(isRead(s.id)?'已读':'未读')+'</div></div>'}).join('')+'</div>'
 }
 
@@ -1568,7 +1568,7 @@ function searchByKeyword(k){
   searchHistoryList=[k,...searchHistoryList.filter(w=>w!==k)].slice(0,10);localStorage.setItem('moxiang_search_history',JSON.stringify(searchHistoryList));
   const r=NOVELS.filter(n=>n.title.includes(k)||n.author.includes(k)||n.cat.includes(k)||n.desc.includes(k));
   document.getElementById('search-hot').style.display='none';
-  document.getElementById('search-results').innerHTML='<div class="search-filter"><span class="active">全部</span><span onclick="filterSearch(\''+k+'\',\'cat\')">分类</span><span onclick="filterSearch(\''+k+'\',\'author\')">作者</span><span onclick="filterSearch(\''+k+'\',\'title\')">书名</span></div>'+(r.length?'<div style="padding:10px 0;font-size:13px;color:var(--text3)">找到 '+r.length+' 个结果</div><div class="novel-list-v">'+r.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div>':'<div class="momo-empty"><p>没找到相关故事</p></div>')
+  document.getElementById('search-results').innerHTML='<div class="search-filter"><span class="active">全部</span><span onclick="filterSearch(\''+k+'\',\'cat\')">分类</span><span onclick="filterSearch(\''+k+'\',\'author\')">作者</span><span onclick="filterSearch(\''+k+'\',\'title\')">书名</span></div>'+(r.length?'<div style="padding:10px 0;font-size:13px;color:var(--text3)">找到 '+r.length+' 个结果</div><div class="novel-list-v">'+r.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div>':'<div class="momo-empty"><img src="https://aka.doubaocdn.com/s/yyUm1waoXJ" alt="momo"><p>没找到相关故事</p></div>')
 }
 function filterSearch(k,type){
   let r=[];
@@ -1576,7 +1576,7 @@ function filterSearch(k,type){
   else if(type==='author')r=NOVELS.filter(n=>n.author.includes(k));
   else if(type==='title')r=NOVELS.filter(n=>n.title.includes(k));
   else r=NOVELS.filter(n=>n.title.includes(k)||n.author.includes(k)||n.cat.includes(k)||n.desc.includes(k));
-  document.getElementById('search-results').innerHTML='<div class="search-filter"><span '+(type==='all'?'class="active"':'')+' onclick="filterSearch(\''+k+'\',\'all\')">全部</span><span '+(type==='cat'?'class="active"':'')+' onclick="filterSearch(\''+k+'\',\'cat\')">分类</span><span '+(type==='author'?'class="active"':'')+' onclick="filterSearch(\''+k+'\',\'author\')">作者</span><span '+(type==='title'?'class="active"':'')+' onclick="filterSearch(\''+k+'\',\'title\')">书名</span></div>'+(r.length?'<div style="padding:10px 0;font-size:13px;color:var(--text3)">找到 '+r.length+' 个结果</div><div class="novel-list-v">'+r.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div>':'<div class="momo-empty"><p>没找到相关故事</p></div>');
+  document.getElementById('search-results').innerHTML='<div class="search-filter"><span '+(type==='all'?'class="active"':'')+' onclick="filterSearch(\''+k+'\',\'all\')">全部</span><span '+(type==='cat'?'class="active"':'')+' onclick="filterSearch(\''+k+'\',\'cat\')">分类</span><span '+(type==='author'?'class="active"':'')+' onclick="filterSearch(\''+k+'\',\'author\')">作者</span><span '+(type==='title'?'class="active"':'')+' onclick="filterSearch(\''+k+'\',\'title\')">书名</span></div>'+(r.length?'<div style="padding:10px 0;font-size:13px;color:var(--text3)">找到 '+r.length+' 个结果</div><div class="novel-list-v">'+r.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div>':'<div class="momo-empty"><img src="https://aka.doubaocdn.com/s/yyUm1waoXJ" alt="momo"><p>没找到相关故事</p></div>');
 }
 document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()});
 document.getElementById('search-input').addEventListener('input',function(e){
