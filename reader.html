@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>墨香阁 - 阅读器</title>
+<style>
+:root{
+  --primary:#4A6FA5;
+  --primary-light:#6B8FC5;
+  --primary-dark:#3A5A8A;
+  --bg:#F5F5F5;
+  --white:#fff;
+  --text:#333;
+  --text2:#666;
+  --text3:#999;
+  --border:#eee;
+  --success:#52c41a;
+  --reader-bg:#F5ECD7;
+  --reader-text:#5c4033;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--reader-bg);color:var(--reader-text);overflow-x:hidden}
+.reader-container{min-height:100%;max-width:480px;margin:0 auto;background:var(--reader-bg);position:relative;padding-bottom:80px}
+.reader-top{position:sticky;top:0;z-index:100;background:var(--reader-bg);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(0,0,0,0.05)}
+.back-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(0,0,0,0.05);cursor:pointer;color:var(--reader-text)}
+.reader-title{flex:1;text-align:center;font-size:15px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reader-menu-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(0,0,0,0.05);cursor:pointer;font-size:16px;font-weight:600}
+.reader-content{padding:20px 16px;font-size:18px;line-height:1.8}
+.reader-content p{text-indent:2em;margin-bottom:16px;position:relative}
+.reader-footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--reader-bg);border-top:1px solid rgba(0,0,0,0.05);display:flex;justify-content:center;gap:30px;padding:10px 24px;padding-bottom:calc(10px + env(safe-area-inset-bottom));z-index:50}
+.reader-footer button{font-size:14px;color:var(--text2);padding:8px 16px;background:transparent;border:none;cursor:pointer;border-radius:8px}
+.reader-footer button:hover{background:rgba(0,0,0,0.05)}
+.reader-settings{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--white);border-radius:16px 16px 0 0;padding:20px 24px 30px;z-index:200;display:none;box-shadow:0 -4px 20px rgba(0,0,0,0.1)}
+.reader-settings.show{display:block}
+.reader-settings h4{font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text)}
+.setting-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.setting-row label{font-size:14px;color:var(--text)}
+.setting-row .btns{display:flex;gap:8px}
+.setting-row .btns button{width:36px;height:36px;border-radius:50%;background:var(--bg);border:none;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
+.setting-row .btns button:hover{background:var(--border)}
+.font-size-display{font-size:14px;min-width:40px;text-align:center;color:var(--text)}
+.theme-options{display:flex;gap:10px;margin-top:8px}
+.theme-option{width:50px;height:50px;border-radius:8px;cursor:pointer;border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.theme-option.active{border-color:var(--primary)}
+.theme-option.t-sepia{background:#F5ECD7;color:#5c4033}
+.theme-option.t-dark{background:#1A1A1A;color:#B0B0B0}
+.theme-option.t-green{background:#CCE8CF;color:#333}
+.theme-option.t-white{background:#fff;color:#333;border:2px solid #ddd}
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.8);color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:150;display:none}
+.overlay.show{display:block}
+.loading{text-align:center;padding:60px 20px;color:var(--text3);font-size:14px}
+.chapter-nav{display:flex;justify-content:space-between;align-items:center;padding:16px;background:var(--reader-bg);border-top:1px solid rgba(0,0,0,0.05);margin-top:20px}
+.chapter-info{font-size:13px;color:var(--text3)}
+</style>
+</head>
+<body>
+<div class="reader-container" id="reader-container">
+  <div class="reader-top">
+    <div class="back-btn" onclick="goBack()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </div>
+    <div class="reader-title" id="novel-title">加载中...</div>
+    <div class="reader-menu-btn" onclick="toggleSettings()">Aa</div>
+  </div>
+  
+  <div class="reader-content" id="reader-text">
+    <div class="loading">正在加载小说内容...</div>
+  </div>
+  
+  <div class="chapter-nav">
+    <button onclick="prevChapter()" style="background:transparent;border:none;color:var(--text2);font-size:14px;cursor:pointer;padding:8px 12px;border-radius:8px">◁ 上一章</button>
+    <div class="chapter-info" id="chapter-info">第 1 章</div>
+    <button onclick="nextChapter()" style="background:transparent;border:none;color:var(--text2);font-size:14px;cursor:pointer;padding:8px 12px;border-radius:8px">下一章 ▷</button>
+  </div>
+</div>
+
+<div class="reader-footer">
+  <button onclick="prevChapter()">◁ 上一章</button>
+  <button onclick="goBack()">返回目录</button>
+  <button onclick="nextChapter()">下一章 ▷</button>
+</div>
+
+<div class="overlay" id="settings-overlay" onclick="closeSettings()"></div>
+<div class="reader-settings" id="reader-settings">
+  <h4>阅读设置</h4>
+  <div class="setting-row">
+    <label>字号</label>
+    <div class="btns">
+      <button onclick="changeFontSize(-1)">-</button>
+      <span class="font-size-display" id="font-size-val">18</span>
+      <button onclick="changeFontSize(1)">+</button>
+    </div>
+  </div>
+  <div class="setting-row">
+    <label>行距</label>
+    <div class="btns">
+      <button onclick="changeLineHeight(-1)">-</button>
+      <span class="font-size-display" id="line-height-val">1.8</span>
+      <button onclick="changeLineHeight(1)">+</button>
+    </div>
+  </div>
+  <div class="setting-row">
+    <label>主题</label>
+    <div class="theme-options">
+      <div class="theme-option t-white" onclick="changeTheme('white')">白</div>
+      <div class="theme-option t-sepia active" onclick="changeTheme('sepia')">护眼</div>
+      <div class="theme-option t-green" onclick="changeTheme('green')">绿</div>
+      <div class="theme-option t-dark" onclick="changeTheme('dark')">黑</div>
+    </div>
+  </div>
+  <div class="setting-row" style="margin-top:16px">
+    <label>AI听书</label>
+    <div class="btns" style="gap:4px">
+      <button onclick="startTTS()" style="width:auto;padding:0 16px;background:var(--primary);color:#fff">播放</button>
+      <button onclick="pauseTTS()" style="width:auto;padding:0 16px">暂停</button>
+      <button onclick="stopTTS()" style="width:auto;padding:0 16px">停止</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// 小说数据
+const NOVELS = [
+  {id:1,title:'最后的灵脉',author:'云中岳',cat:'玄幻',words:'4200字',readTime:'8分钟',heat:'52万',desc:'世间最后一条灵脉即将枯竭，守脉人面临抉择：是让灵气消散，还是以自身为祭？',cover:0,tag:'一话完结',rating:4.8,score:96},
+  {id:2,title:'深巷咖啡馆',author:'夜行风',cat:'都市',words:'5600字',readTime:'11分钟',heat:'38万',desc:'只在午夜出现的咖啡馆，来客都能遇见一个已经失去的人。但代价是什么？',cover:1,tag:'一话完结',rating:4.6,score:92},
+  {id:3,title:'银杏树下',author:'月下蝶',cat:'言情',words:'4800字',readTime:'9分钟',heat:'45万',desc:'她和他在同一棵银杏树下相遇三次，跨越二十年。第三次，她终于说出了那句话。',cover:2,tag:'一话完结',rating:4.9,score:98},
+  {id:4,title:'第七个房客',author:'寒夜烛',cat:'悬疑',words:'6200字',readTime:'12分钟',heat:'61万',desc:'老楼只有六层，但房东坚持说还有第七个房客。直到那天深夜，他听到了楼上的脚步声。',cover:3,tag:'一话完结',rating:4.7,score:94},
+  {id:5,title:'星尘信使',author:'铁星河',cat:'科幻',words:'5100字',readTime:'10分钟',heat:'34万',desc:'一封来自四光年外的信，写满了思念。信使是光，而收信人已经不在了。',cover:4,tag:'一话完结',rating:4.5,score:90},
+  {id:6,title:'断桥',author:'孤鸿影',cat:'武侠',words:'3900字',readTime:'7分钟',heat:'29万',desc:'桥已断，人已远。他等了十三年的对手终于来了，却发现对方早已握不住剑。',cover:5,tag:'一话完结',rating:4.4,score:88},
+  {id:7,title:'长安月',author:'墨如烟',cat:'历史',words:'5500字',readTime:'11分钟',heat:'27万',desc:'上元夜，长安灯火如昼。一个小吏在人群中看到了不该出现的人。',cover:6,tag:'一话完结',rating:4.3,score:86},
+  {id:8,title:'镜中人',author:'雾中灯',cat:'悬疑',words:'4700字',readTime:'9分钟',heat:'55万',desc:'镜子里的自己开始做不同的动作，起初只是细微的差异，直到有一天它冲她笑了。',cover:7,tag:'一话完结',rating:4.8,score:96},
+  {id:9,title:'最后一局',author:'棋中仙',cat:'都市',words:'4300字',readTime:'8分钟',heat:'41万',desc:'退休棋手在公园里遇到一个少年，下了一盘改变两人命运的棋。',cover:8,tag:'一话完结',rating:4.5,score:90},
+  {id:10,title:'人间蒸发',author:'寒夜烛',cat:'悬疑',words:'5800字',readTime:'11分钟',heat:'48万',desc:'三个互不相识的人，同一天在同一座城市消失。唯一的线索是他们都收到了同一封邮件。',cover:9,tag:'一话完结',rating:4.6,score:92},
+  {id:11,title:'归途',author:'晚风吟',cat:'言情',words:'3600字',readTime:'7分钟',heat:'33万',desc:'异国他乡的机场，她遇到了十年前不告而别的初恋。十小时的航班，他们终于把话说完了。',cover:10,tag:'一话完结',rating:4.4,score:88},
+  {id:12,title:'代码幽灵',author:'铁星河',cat:'科幻',words:'5400字',readTime:'10分钟',heat:'37万',desc:'程序员发现代码库中有一段没人写过的代码，运行后输出了他已故母亲的留言。',cover:11,tag:'一话完结',rating:4.7,score:94},
+  {id:13,title:'烽火家书',author:'折扇先生',cat:'历史',words:'4100字',readTime:'8分钟',heat:'25万',desc:'一封寄不出的家书，在战火中辗转了四十年。当它终于到达时，收信人的孙子打开了它。',cover:12,tag:'一话完结',rating:4.2,score:84},
+  {id:14,title:'雨夜来客',author:'夜行风',cat:'都市',words:'3200字',readTime:'6分钟',heat:'30万',desc:'暴雨夜，一个陌生人敲门借电话。他打完电话后说了一句：谢谢你，我们不会再见了。',cover:13,tag:'一话完结',rating:4.3,score:86},
+  {id:15,title:'剑意',author:'剑归宗',cat:'武侠',words:'4500字',readTime:'9分钟',heat:'36万',desc:'师父说剑意不可传，但他用一生去悟。直到师父离世那天，他终于听懂了风声。',cover:14,tag:'一话完结',rating:4.6,score:92},
+  {id:16,title:'时间商店',author:'雾中灯',cat:'科幻',words:'5900字',readTime:'12分钟',heat:'44万',desc:'巷子深处有一家可以买卖时间的商店。她用十年寿命换回了母亲最后一天的清醒。',cover:15,tag:'一话完结',rating:4.8,score:96}
+];
+
+// 小说内容
+const STORIES = {
+1:'<p>守脉人林玄坐在灵脉边，已经三天三夜了。</p><p>灵脉的光芒越来越暗，像一盏快要熄灭的灯。这条灵脉滋养了这片土地三千年，如今终于走到了尽头。</p><p>长老们来过，劝他离开。"灵脉枯竭是天意，没人能改变。"</p><p>林玄没说话，只是看着灵脉。他从小在这里长大，父亲是上一任守脉人，祖父也是。这条灵脉，就是他的家。</p><p>夜里，灵脉发出最后的微光，照在林玄脸上。他想起父亲临终前说的话："守脉人守的不是脉，是人心。"</p><p>林玄笑了。他解开衣襟，露出胸口的守脉印记。</p><p>"那我就把心，还给这条脉。"</p><p>他纵身跃入灵脉。光芒骤然爆发，照亮了整片夜空。</p><p>第二天，村民们发现灵脉重新亮了起来，比以往任何时候都要明亮。只是守脉人不见了。</p><p>有人说，林玄成了灵脉的一部分。也有人说，他只是换了一种方式，继续守护着这片土地。</p><p>不管怎样，灵脉还在，希望就在。</p>',
+2:'<p>午夜十二点，巷子深处的咖啡馆准时亮起了灯。</p><p>陈默推开门，风铃发出清脆的响声。店里只有一个客人，坐在靠窗的位置，背对着他。</p><p>"你来了。"客人转过身，是陈默去世三年的妻子。</p><p>陈默的眼泪一下子就下来了。</p><p>他们聊了很久，聊她走后的日子，聊他一个人怎么过的，聊那些没来得及说的话。</p><p>天快亮的时候，妻子站起来："我该走了。"</p><p>"能不走吗？"陈默抓住她的手，手是凉的。</p><p>妻子笑了："每个人只能来一次。这是规则。"</p><p>她走到门口，回头说："好好活着，我在那边等你。"</p><p>门关上了。陈默发现桌上放着一张纸条，是妻子的笔迹："咖啡钱，用你三年的思念付过了。"</p><p>他走出咖啡馆，天已经亮了。回头看，巷子空空如也，根本没有什么咖啡馆。</p><p>但陈默知道，那不是梦。</p>',
+3:'<p>第一次相遇，她八岁，他十岁。</p><p>银杏叶落了一地，她蹲在树下捡叶子，他跑过来撞了她一下。"对不起！"他红着脸说。</p><p>第二次相遇，她十八岁，他二十岁。</p><p>同一棵银杏树下，她在看书，他走过来："好久不见。"</p><p>他们聊了一下午，夕阳把影子拉得很长。临走时，他想说什么，最终还是没说出口。</p><p>第三次相遇，她三十八岁，他四十岁。</p><p>还是那棵银杏树，叶子黄了又绿，绿了又黄，二十年过去了。</p><p>他先开口："这些年，我一直在等你。"</p><p>她看着他，眼泪流了下来："我也是。"</p><p>有些话，跨越二十年，终于说出口了。</p><p>有些爱，从来没有变过。</p>',
+4:'<p>老张搬进老楼的第一天，房东就跟他说："我们楼只有六层。"</p><p>老张点点头，没在意。</p><p>但每天深夜，他都能听到楼上传来脚步声，很轻，一步一步，从走廊这头走到那头。</p><p>他去问邻居，邻居都说没听到。"我们这楼只有六层，你住六楼，上面哪有人？"</p><p>老张害怕了，去找房东。房东叹了口气，终于说了实话。</p><p>"三十年前，七楼住着一个女孩，火灾的时候没跑出来。从那以后，七楼就封了。"</p><p>"那为什么说只有六层？"</p><p>"因为她还在。"房东看着老张，"她不害人，就是想回家看看。"</p><p>那天晚上，老张又听到了脚步声。他没有害怕，只是对着天花板轻轻说了一句："欢迎回家。"</p><p>脚步声停了。</p><p>从那以后，脚步声再也没有出现过。</p>',
+5:'<p>信使号飞船航行了四年，终于到达地球。</p><p>这是一封来自半人马座α星的信，写信人是一位宇航员，收信人是他的妻子。</p><p>信写得很长，写了他看到的星空，写了他遇到的奇迹，写了他对她的思念。</p><p>"亲爱的，当你收到这封信的时候，我已经不在了。飞船的能源只够把信送回去，不够我返航。"</p><p>"但没关系，这封信以光速飞行，穿越了四光年的距离，就像我穿越时空来见你。"</p><p>"我爱你，从过去到未来，永远。"</p><p>妻子读完信，泪流满面。她把信放在胸口，仿佛能感受到丈夫的温度。</p><p>光走了四年，把思念带到了她身边。</p><p>爱，比光更快。</p>',
+6:'<p>断桥边，他等了十三年。</p><p>十三年前，他和对手在这里约战，对方说："等我练成绝世剑法，再来和你一决高下。"</p><p>他等啊等，从少年等到中年，头发都白了。</p><p>终于有一天，一个年轻人来到断桥边。</p><p>"你就是等我师父的那个人？"</p><p>他点点头。</p><p>"师父三年前就走了。"年轻人拿出一把剑，"他临终前说，这把剑交给你，他认输了。"</p><p>他接过剑，剑很轻，像一片羽毛。</p><p>"他为什么不亲自来？"</p><p>"师父得了重病，连剑都握不住了。"年轻人说，"他说，与其让你看到他狼狈的样子，不如让你永远记得当年那个意气风发的他。"</p><p>他站在断桥边，风吹起他的白发。</p><p>十三年的等待，等来的不是一场决战，而是一句迟到的道歉。</p><p>他把剑扔进河里。</p><p>桥断了，人也走了。还有什么好争的呢？</p>',
+7:'<p>上元夜，长安灯火如昼。</p><p>小吏李文走在人群中，忽然看到了一个熟悉的身影。</p><p>那是他十年前去世的妻子。</p><p>她穿着当年的衣服，手里提着一盏花灯，在人群中笑着。</p><p>李文追过去，穿过熙熙攘攘的人群，终于抓住了她的手。</p><p>"你怎么来了？"妻子惊讶地看着他。</p><p>"我想你。"李文的眼泪流了下来。</p><p>妻子笑了，伸手擦去他的眼泪："今天是上元节，阎王放我们回来看看。天一亮就要回去了。"</p><p>他们手牵着手，在长安的灯火中走着，像当年一样。</p><p>天快亮的时候，妻子停下脚步："我该走了。"</p><p>"能不走吗？"</p><p>"人鬼殊途。"妻子抱了抱他，"好好活着，每年上元夜，我都会来看你。"</p><p>她消失在晨光中。</p><p>李文站在原地，手里还留着她的温度。</p><p>长安的灯火灭了，但他心里的灯，永远亮着。</p>',
+8:'<p>林晓发现镜子里的自己不对劲，是从一个月前开始的。</p><p>起初只是细微的差异——她抬手，镜子里的自己慢了半拍。</p><p>她以为是错觉，没在意。</p><p>但情况越来越严重。她笑的时候，镜子里的自己不笑。她转身的时候，镜子里的自己还在看着她。</p><p>林晓害怕了，用布把镜子蒙了起来。</p><p>那天夜里，她听到镜子里传来敲击声。</p><p>她鼓起勇气，掀开布。镜子里的自己正对着她笑，笑得很诡异。</p><p>"你终于发现了。"镜子里的人说，"我在里面待了太久，想出来换换。"</p><p>"你是谁？"</p><p>"我就是你啊。"镜子里的人说，"只是，你是活在现实里的我，我是活在镜子里的你。"</p><p>那天晚上，林晓做了一个决定。</p><p>第二天，朋友来找她，发现她站在镜子前，对着镜子笑。</p><p>没有人知道，镜子里和镜子外，已经换了人。</p>',
+9:'<p>退休棋手老周每天都去公园下棋。</p><p>那天，一个少年坐在他对面："老爷爷，我跟你下一盘。"</p><p>老周笑了："好啊。"</p><p>少年的棋下得很好，老周使出了全力，才勉强赢了半目。</p><p>"你棋下得不错。"老周说。</p><p>"是爷爷教得好。"少年说，"我爷爷说，他这辈子最佩服的棋手就是您。"</p><p>"你爷爷是？"</p><p>"我爷爷叫陈峰。"</p><p>老周愣住了。陈峰是他当年的手下败将，因为输了那盘棋，再也不下棋了。</p><p>"我爷爷临终前说，当年那盘棋，他是故意输的。"少年说，"他说您那时候家里出事，需要赢那盘棋拿奖金给孩子治病。"</p><p>老周的眼泪流了下来。</p><p>三十年前的那盘棋，他以为是自己赢了，没想到是对方让了他。</p><p>一盘棋，改变了两个人的命运。</p><p>老周看着少年，笑了："来，再教你几手。"</p>',
+10:'<p>三个人，同一天，在同一座城市消失了。</p><p>第一个是出租车司机，最后一个乘客说他去了海边。</p><p>第二个是摄影师，相机里最后一张照片是铁路的尽头。</p><p>第三个是大学生，日记的最后一页写着："她在等我。"</p><p>警察查了很久，没有任何线索。</p><p>直到一年后，有人在海边发现了一条旧船，船上放着三样东西：一个出租车司机的帽子，一个摄影师的相机，一本大学生的日记。</p><p>日记里夹着一张照片，是一个女孩的黑白照片。</p><p>警察终于明白了。</p><p>很多年前，有个女孩在铁路边被出租车撞死了，司机逃逸，路过的摄影师拍了照却没报警，大学生是她的男朋友，没能救她。</p><p>三个人的消失，串起了一段尘封的往事。</p><p>他们都收到了同一封邮件，邮件里只有一句话："她在海边等你们。"</p>',
+11:'<p>机场，林可遇到了陆声。</p><p>十年没见，他瘦了，眼神也变了。</p><p>"好巧。"他说。</p><p>是啊，好巧。十年前，他也是这么说的。</p><p>十小时的航班，他们聊了很多。聊当年的不辞而别，聊这些年的经历，聊那些没说出口的话。</p><p>"当年为什么走？"林可终于问了。</p><p>"我那时候什么都没有，给不了你未来。"陆声说，"我以为等我有了一切，就能回来找你。"</p><p>"那现在呢？"</p><p>"现在我有了一切，却发现最重要的东西，早就丢了。"</p><p>飞机降落了。</p><p>"到了之后，能请你喝杯咖啡吗？"陆声说，"不是复合，就是想好好说声再见。"</p><p>林可看着他，点了点头。</p><p>十年的时间，足够把很多话说清楚。</p><p>有些再见，需要一次重逢，才能说出口。</p>',
+12:'<p>林远在代码里发现了一段奇怪的函数。</p><p>函数名是last_words_from_mom。</p><p>没有人写过这段代码，它就像凭空出现的一样。</p><p>林远运行了这段函数。</p><p>终端输出了一行字："小远，妈知道你忙，不怪你。冰箱里给你留了饺子，记得煮了吃。"</p><p>林远的眼泪一下子就下来了。</p><p>母亲三个月前去世了，最后一条语音就是这个。</p><p>他逐行阅读这段代码，注释的语气，和母亲说话的语气一模一样。</p><p>第二次运行，输出："阳台上的花该浇水了，你总是忘。"</p><p>第三次运行，输出："周末别老加班，出去走走，看看太阳。"</p><p>林远哭了很久。</p><p>他把这段代码复制下来，命名为mom.js。</p><p>然后他下楼，买了一袋饺子。</p><p>也许，母亲的思念，找到了一种他能读懂的语言。</p>',
+13:'<p>一封信，走了四十年才到达。</p><p>收信人是赵春生，但他已经不在了。他的孙子赵明接过了这封信。</p><p>信是1943年写的，写信人是赵守义，赵春生的发小。</p><p>"春生吾兄：别来无恙？上次见面还是民国二十六年，你送我上火车的那天。"</p><p>"我在滇西，一切还好，只是想家。昨日梦见赵家村的柿子树又红了。"</p><p>"如果我回不去，替我去看看我娘。还有，那壶酒，你先替我存着。"</p><p>赵明翻了族谱。赵守义1943年阵亡，年仅二十二岁。</p><p>而赵春生，临终前一直在说："守义说回来喝的，我等等他。"</p><p>他等了三十五年，没有等到。</p><p>赵明把信放在爷爷的遗像前，倒了两杯酒。</p><p>"守义爷爷，我爷爷等了您三十五年。这杯酒，他替您存了一辈子。"</p><p>酒香在老屋里弥漫，像跨越时光的拥抱。</p>',
+14:'<p>暴雨夜，有人敲陈生的门。</p><p>是个陌生男人，浑身湿透。</p><p>"能借个电话吗？我手机没电了。"</p><p>陈生把手机递给他。</p><p>男人拨了三个号码，都没人接。最后一次，他对着电话说："喂，是我。不用回了，就是想跟你说一声——我很好。"</p><p>然后他挂了电话，笑了笑："谢谢你。我们不会再见了。"</p><p>他走进雨里，消失了。</p><p>陈生后来才知道，这个人叫周海，三年前就住在这间屋子里。</p><p>那天晚上，他心梗发作，拨了三个电话都没人接，一个人死在了客厅。</p><p>三个未接来电——打给前妻、打给弟弟、打给一个老朋友。</p><p>陈生站在门口，看着雨幕。</p><p>然后他拿出手机，给很久没联系的家人，逐个打了电话。</p><p>每一个，都接了。</p>',
+15:'<p>师父说，剑意不可传，只能悟。</p><p>叶沉上山十年，只学了一件事：握剑。</p><p>他每天练剑六个小时，从春到冬。但他知道，那只是技巧，不是剑意。</p><p>他见过师父出剑，很慢，但那一剑，让整座山的鸟都安静了。</p><p>师父走的那天，是个大风天。</p><p>"剑意在哪里？"叶沉问。</p><p>师父笑了："在风里。你听到了吗？"</p><p>然后他闭上了眼睛。</p><p>叶沉在山上又住了一年，每天听风。</p><p>直到某个黄昏，他随手拔出剑，在院中舞了一遍。</p><p>剑划过空气的时候，他听到了。</p><p>不是风声，是一个声音——像师父在说"好"。</p><p>叶沉泪流满面。</p><p>剑意不在剑里，不在风里，在一个人的心里。</p><p>他收剑入鞘，下山去了。</p><p>从此再没有人见他拔过剑，但所有遇见他的人都说，这个人身上，有一种很安静的力量。</p>',
+16:'<p>时间商店，只在深夜开门。</p><p>苏瑶走进去，店里只有一面墙的钟，和一位老人。</p><p>"这里可以买卖时间。"老人说，"买来的时间加在你的寿命上，卖掉的时间从你身上扣除。"</p><p>苏瑶想起了母亲。阿尔茨海默症，已经不认识她了。</p><p>"我想买一天。"她说，"只要她清醒一天。"</p><p>"价格是十年。"</p><p>苏瑶没有犹豫："成交。"</p><p>第二天早上，母亲睁开眼，叫了她的名字。</p><p>那一天，她们聊了很多。母亲记得所有的事——她小时候怕打雷，中学时暗恋过班长，工作后第一次加薪请全家吃了火锅。</p><p>傍晚，母亲拉着她的手："小瑶，妈知道自己糊涂了三年。别怪妈。"</p><p>"我不怪你。"苏瑶哽咽着，"从来没有。"</p><p>太阳落山了，母亲的眼神慢慢变得涣散。</p><p>最后一刻，她说："要好好活着，替我多看看这个世界。"</p><p>苏瑶的白发多了几根——那是十年寿命的代价。</p><p>但她从不后悔。</p><p>十年换一天，值了。</p>'
+};
+
+// 阅读器设置
+let readerSettings = JSON.parse(localStorage.getItem('moxiang_reader') || '{"fontSize":18,"lineHeight":1.8,"theme":"sepia"}');
+let currentNovelId = null;
+let ttsUtterance = null;
+
+// 获取URL参数
+function getUrlParam(name) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+}
+
+// 获取小说
+function getNovel(id) {
+  return NOVELS.find(n => String(n.id) === String(id));
+}
+
+// 初始化
+function init() {
+  const novelId = getUrlParam('id') || 1;
+  loadNovel(novelId);
+  applyReaderSettings();
+}
+
+// 加载小说
+function loadNovel(novelId) {
+  currentNovelId = parseInt(novelId);
+  const novel = getNovel(novelId);
+  
+  if (!novel) {
+    document.getElementById('novel-title').textContent = '小说不存在';
+    document.getElementById('reader-text').innerHTML = '<div class="loading">小说不存在</div>';
+    return;
+  }
+  
+  document.getElementById('novel-title').textContent = novel.title;
+  
+  const story = STORIES[novelId] || '';
+  const paragraphs = story.includes('<p>') ? 
+    story.replace(/<\/p>/g, '</p>\n').split('\n').filter(p => p.trim()) : 
+    story.split('\n').filter(p => p.trim());
+  
+  let html = '';
+  paragraphs.forEach((p, i) => {
+    html += '<p>' + p.replace(/^<p>|<\/p>$/g, '') + '</p>';
+  });
+  
+  document.getElementById('reader-text').innerHTML = html;
+  document.getElementById('chapter-info').textContent = '第 1 章 / 共 1 章';
+}
+
+// 返回
+function goBack() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+// 上一章
+function prevChapter() {
+  if (currentNovelId <= 1) {
+    showToast('已经是第一章了');
+    return;
+  }
+  loadNovel(currentNovelId - 1);
+  window.scrollTo(0, 0);
+}
+
+// 下一章
+function nextChapter() {
+  if (currentNovelId >= NOVELS.length) {
+    showToast('已经是最后一章了');
+    return;
+  }
+  loadNovel(currentNovelId + 1);
+  window.scrollTo(0, 0);
+}
+
+// 显示设置
+function toggleSettings() {
+  document.getElementById('reader-settings').classList.toggle('show');
+  document.getElementById('settings-overlay').classList.toggle('show');
+}
+
+// 关闭设置
+function closeSettings() {
+  document.getElementById('reader-settings').classList.remove('show');
+  document.getElementById('settings-overlay').classList.remove('show');
+}
+
+// 改变字号
+function changeFontSize(d) {
+  readerSettings.fontSize = Math.max(12, Math.min(32, readerSettings.fontSize + d));
+  localStorage.setItem('moxiang_reader', JSON.stringify(readerSettings));
+  applyReaderSettings();
+}
+
+// 改变行距
+function changeLineHeight(d) {
+  readerSettings.lineHeight = Math.max(1.2, Math.min(2.5, readerSettings.lineHeight + d * 0.1));
+  localStorage.setItem('moxiang_reader', JSON.stringify(readerSettings));
+  applyReaderSettings();
+}
+
+// 改变主题
+function changeTheme(theme) {
+  readerSettings.theme = theme;
+  localStorage.setItem('moxiang_reader', JSON.stringify(readerSettings));
+  applyReaderSettings();
+  
+  // 更新主题按钮状态
+  document.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
+  document.querySelector('.theme-option.t-' + theme).classList.add('active');
+}
+
+// 应用阅读设置
+function applyReaderSettings() {
+  const rc = document.getElementById('reader-text');
+  const container = document.getElementById('reader-container');
+  
+  rc.style.fontSize = readerSettings.fontSize + 'px';
+  rc.style.lineHeight = readerSettings.lineHeight;
+  
+  const themes = {
+    white: { bg: '#fafafa', text: '#333' },
+    sepia: { bg: '#F5ECD7', text: '#5c4033' },
+    green: { bg: '#CCE8CF', text: '#333' },
+    dark: { bg: '#1A1A1A', text: '#B0B0B0' }
+  };
+  
+  const th = themes[readerSettings.theme] || themes.sepia;
+  container.style.background = th.bg;
+  container.style.color = th.text;
+  rc.style.background = th.bg;
+  rc.style.color = th.text;
+  
+  document.getElementById('font-size-val').textContent = readerSettings.fontSize;
+  document.getElementById('line-height-val').textContent = readerSettings.lineHeight.toFixed(1);
+  
+  // 更新主题按钮状态
+  document.querySelectorAll('.theme-option').forEach(el => el.classList.remove('active'));
+  const activeTheme = document.querySelector('.theme-option.t-' + readerSettings.theme);
+  if (activeTheme) activeTheme.classList.add('active');
+}
+
+// AI听书
+function startTTS() {
+  if (!window.speechSynthesis) {
+    showToast('浏览器不支持语音播放');
+    return;
+  }
+  
+  const text = document.getElementById('reader-text').innerText || '';
+  if (!text) {
+    showToast('没有可朗读内容');
+    return;
+  }
+  
+  window.speechSynthesis.cancel();
+  ttsUtterance = new SpeechSynthesisUtterance(text);
+  ttsUtterance.lang = 'zh-CN';
+  ttsUtterance.rate = 1;
+  window.speechSynthesis.speak(ttsUtterance);
+  showToast('开始AI听书');
+}
+
+function pauseTTS() {
+  if (window.speechSynthesis) {
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+      showToast('继续播放');
+    } else {
+      window.speechSynthesis.pause();
+      showToast('已暂停');
+    }
+  }
+}
+
+function stopTTS() {
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+    showToast('已停止');
+  }
+}
+
+// 提示
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// 初始化
+window.onload = init;
+</script>
+</body>
+</html>
