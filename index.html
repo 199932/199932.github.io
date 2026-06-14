@@ -509,7 +509,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
 </style>
 </head>
 <body>
-<span id="site-version" style="display:none">v1.3_20260614_fix_all_p0</span>
+<span id="site-version" style="display:none">v1.5_20260614_fix_core_bugs</span>
 <div id="app">
 <div class="toast" id="toast"></div>
 <div class="overlay" id="overlay"></div>
@@ -1192,7 +1192,10 @@ function saveWork(status){
       works[idx].status=status;
     }
   }else{
-    const newWork={id:workId,title:title,cat:currentWorkCat||'未分类',desc:currentWorkDesc||'',content:content,cover:coverIdx,author:authorName,authorId:authorId,status:status,createTime:now,updateTime:now,readCount:0,likeCount:0};
+    // 编辑时保留原有status
+    var existingWork=works.find(w=>w.id===workId);
+    var finalStatus=existingWork?existingWork.status:status;
+    const newWork={id:workId,title:title,cat:currentWorkCat||'未分类',desc:currentWorkDesc||'',content:content,cover:coverIdx,author:authorName,authorId:authorId,status:finalStatus,createTime:existingWork?existingWork.createTime:now,updateTime:now,readCount:existingWork?existingWork.readCount:0,likeCount:existingWork?existingWork.likeCount:0};
     if(status==='published'){newWork.publishTime=now;}
     works.unshift(newWork);
   }
@@ -1363,7 +1366,7 @@ function toggleShelf(id){
   localStorage.setItem('moxiang_shelf',JSON.stringify(shelf));
   if(currentPage==='detail'){openDetail(id);}
 }
-function toggleShelfItem(n){if(inShelf(n.id)){shelf=shelf.filter(s=>s.id!==n.id||String(s.id)!==String(n.id));toast('已移出书架')}else{shelf.unshift({id:n.id,title:n.title,author:n.author,cover:n.cover,cat:n.cat,time:Date.now()});toast('已加入书架')}saveShelf()}
+function toggleShelfItem(n){if(inShelf(n.id)){shelf=shelf.filter(s=>s.id!==n.id||String(s.id)!==String(n.id));toast('已移出书架')}else{shelf.unshift({id:n.id,title:n.title,author:n.author,cover:n.cover,cat:n.cat,time:Date.now()});toast('已加入书架')}saveShelf();renderBookshelf()}
 function isRead(id){return readSet.includes(id)}
 function markRead(id){if(!isRead(id)){readSet.push(id);saveRead()}}
 function getNovel(id){return NOVELS.find(n=>String(n.id)===String(id)||n.id===parseInt(id))}
@@ -1707,7 +1710,7 @@ function openReader(nid){
   });
   html+='</div>';
   html+='<div class="reader-footer"><button onclick="prevNovel(\''+nid+'\')" style="font-size:14px;padding:6px 14px;background:transparent;border:none;color:var(--text2);cursor:pointer">◁ 上一章</button><button onclick="showPage(\'detail\')" style="font-size:14px;padding:6px 14px;background:transparent;border:none;color:var(--text2);cursor:pointer">返回</button><button onclick="nextNovel(\''+nid+'\')" style="font-size:14px;padding:6px 14px;background:transparent;border:none;color:var(--text2);cursor:pointer">下一章 ▷</button></div>';
-  html+='<div class="reader-settings" id="reader-settings"><h4>阅读设置</h4><div>字号 <button onclick="changeFontSize(-1)">-</button> <span id="font-size-val">18</span> <button onclick="changeFontSize(1)">+</button></div><div>行距 <button onclick="changeLineHeight(-1)">-</button> <span id="line-height-val">1.8</span> <button onclick="changeLineHeight(1)">+</button></div><div>主题 <button onclick="changeTheme(\'white\')">白</button> <button onclick="changeTheme(\'sepia\')"> sepia</button> <button onclick="changeTheme(\'green\')">绿</button> <button onclick="changeTheme(\'dark\')">黑</button></div><div style="margin-top:10px"><button class="btn-primary" onclick="startTTS()">AI听书</button> <button class="btn-outline" onclick="pauseTTS()">暂停</button> <button class="btn-outline" onclick="stopTTS()">停止</button></div></div>';
+  html+='<div class="reader-settings" id="reader-settings"><h4>阅读设置</h4><div>字号 <button onclick="changeFontSize(-1)">-</button> <span id="font-size-val">18</span> <button onclick="changeFontSize(1)">+</button></div><div>行距 <button onclick="changeLineHeight(-0.1)">-</button> <span id="line-height-val">1.8</span> <button onclick="changeLineHeight(0.1)">+</button></div><div>主题 <button onclick="changeTheme(\'white\')">白</button> <button onclick="changeTheme(\'sepia\')"> sepia</button> <button onclick="changeTheme(\'green\')">绿</button> <button onclick="changeTheme(\'dark\')">黑</button></div><div style="margin-top:10px"><button class="btn-primary" onclick="startTTS()">AI听书</button> <button class="btn-outline" onclick="pauseTTS()">暂停</button> <button class="btn-outline" onclick="stopTTS()">停止</button></div></div>';
   html+='<div id="para-comment-panel" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:16px 16px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,0.1);padding:16px;z-index:200;max-width:480px;margin:0 auto"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h4 style="margin:0">段评</h4><button onclick="document.getElementById(\'para-comment-panel\').style.display=\'none\'">关闭</button></div><div id="para-comment-list" style="max-height:200px;overflow-y:auto;margin-bottom:10px"></div><input id="para-comment-input" placeholder="发段评" style="width:70%;padding:8px;border:1px solid var(--border);border-radius:8px"><button class="btn-primary" style="margin-left:8px;padding:8px 16px" onclick="submitParaComment()">发送</button></div>';
   document.getElementById('page-reader').innerHTML=html;showPage('reader');applyReaderSettings();updateParaCounts(nid);
 }
@@ -1730,7 +1733,7 @@ function updateParaCounts(nid){for(let i=0;i<50;i++){const c=getParaComments(nid
 
 function toggleSettings(){const s=document.getElementById('reader-settings');s.style.display=s.style.display==='block'?'none':'block';}
 function changeFontSize(d){readerSettings.fontSize=Math.max(12,Math.min(32,readerSettings.fontSize+d));localStorage.setItem('moxiang_reader',JSON.stringify(readerSettings));applyReaderSettings();}
-function changeLineHeight(d){readerSettings.lineHeight=Math.max(1.2,Math.min(2.5,readerSettings.lineHeight+d*0.1));localStorage.setItem('moxiang_reader',JSON.stringify(readerSettings));applyReaderSettings();}
+function changeLineHeight(d){readerSettings.lineHeight=Math.max(1.2,Math.min(2.5,readerSettings.lineHeight+d));localStorage.setItem('moxiang_reader',JSON.stringify(readerSettings));applyReaderSettings();}
 function changeTheme(t){readerSettings.theme=t;localStorage.setItem('moxiang_reader',JSON.stringify(readerSettings));applyReaderSettings();}
 function applyReaderSettings(){
   const rc=document.getElementById('reader-text');if(!rc)return;
@@ -1750,8 +1753,8 @@ function startTTS(){
   ttsUtterance.lang='zh-CN';ttsUtterance.rate=1;
   window.speechSynthesis.speak(ttsUtterance);toast('开始AI听书');
 }
-function pauseTTS(){if(window.speechSynthesis){if(window.speechSynthesis.paused){window.speechSynthesis.resume();toast('继续播放');}else{window.speechSynthesis.pause();toast('已暂停');}}}
-function stopTTS(){if(window.speechSynthesis){window.speechSynthesis.cancel();toast('已停止');}}
+function pauseTTS(){if(window.speechSynthesis){if(window.speechSynthesis.paused){window.speechSynthesis.resume();ttsIsPaused=false;toast('继续播放');}else{window.speechSynthesis.pause();ttsIsPaused=true;toast('已暂停');}}}
+function stopTTS(){if(window.speechSynthesis){window.speechSynthesis.cancel();ttsIsPlaying=false;ttsIsPaused=false;toast('已停止');}}
 
 var smsCountdown=null;
 function startSmsCountdown(){
@@ -2282,15 +2285,22 @@ async function publishToMoxiang(){
 
   var statusDiv=document.getElementById('publish-status');
   statusDiv.style.display='block';
-  statusDiv.innerHTML='<div class="ai-loading"><div class="spinner"></div>正在写入数据库...</div>';
-  const {data,error}=await apiCall('/novels',{method:'POST',body:JSON.stringify({title:safeTitle,content:content,description:currentWorkDesc||content.slice(0,80),category:selectedPubCat,cover:currentWorkCover||0})});
-  if(error){statusDiv.innerHTML='<p style="color:var(--danger)">发布失败：'+error+'</p><button onclick="publishToMoxiang()" style="margin-top:12px;padding:8px 16px;background:var(--primary);color:#fff;border-radius:8px">重试</button>';return;}
-  const novel=data.novel;
-  const n=normalizeDbNovel(novel);if(!NOVELS.find(x=>String(x.id)===String(n.id)))NOVELS.push(n);
-  var novelUrl=window.location.origin+'/?novel='+novel.id;
-  statusDiv.innerHTML='<p style="color:var(--success)">✅ 发布成功！</p><p style="font-size:13px;margin-top:8px">作品链接：<a href="'+novelUrl+'" target="_blank" style="color:var(--primary);text-decoration:underline">'+novelUrl+'</a></p><p style="font-size:12px;color:var(--text3);margin-top:8px">首页已实时更新，3秒后自动打开作品。</p>';
-  saveWork('published');renderHome();
-  setTimeout(function(){window.open(novelUrl,'_blank');},3000);
+  statusDiv.innerHTML='<div class="ai-loading"><div class="spinner"></div>正在发布...</div>';
+  
+  // 本地发布模式（不依赖服务器）
+  var newId='local_'+Date.now();
+  var newNovel={id:newId,title:safeTitle,author:authorName,cat:selectedPubCat,words:wordCount,readTime:readTime+'分钟',heat:'0',desc:currentWorkDesc||content.slice(0,80),cover:currentWorkCover||0,tag:'原创',rating:'9.0',score:90,local:true};
+  if(!NOVELS.find(x=>String(x.id)===String(newId)))NOVELS.push(newNovel);
+  STORIES[newId]=content.replace(/
+/g,'</p><p>');
+  
+  var novelUrl=window.location.origin+'/?novel='+newId;
+  statusDiv.innerHTML='<p style="color:var(--success)">✅ 发布成功！</p><p style="font-size:13px;margin-top:8px">作品已保存到本地</p><p style="font-size:12px;color:var(--text3);margin-top:8px">首页已实时更新。</p>';
+  saveWork('published');
+  // 同步到NOVELS数组确保首页显示
+  var syncWork=works.find(w=>w.id===workId);
+  if(syncWork)syncWorkToNovels(syncWork);
+  renderHome();
 }
 
 function generateNovelHTML(title,content,author,cat,words,readTime){
