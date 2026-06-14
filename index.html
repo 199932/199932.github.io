@@ -509,7 +509,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
 </style>
 </head>
 <body>
-<span id="site-version" style="display:none">v1.2_20260614_full_ui_51novels</span>
+<span id="site-version" style="display:none">v1.3_20260614_fix_all_p0</span>
 <div id="app">
 <div class="toast" id="toast"></div>
 <div class="overlay" id="overlay"></div>
@@ -1448,7 +1448,7 @@ function novelCardHTML(n,idx){
 }
 
 function renderHome(){
-  var c=document.getElementById('home-content');
+  var c=getElement('home-content');
   if(!c)return;
   var bannerNovels=[NOVELS[0],NOVELS[3],NOVELS[15]].filter(Boolean);
   var bannerColors=['linear-gradient(135deg,#4A6FA5,#6B8FC5)','linear-gradient(135deg,#C04848,#D4726A)','linear-gradient(135deg,#834D9B,#A56CC1)'];
@@ -1467,7 +1467,7 @@ function renderHome(){
           '<div style="font-size:14px;font-weight:600;color:#333;margin-bottom:4px">6分钟精选</div>'+
           '<div style="font-size:11px;color:#999">短篇精品</div>'+
         '</div>'+
-        '<div onclick="filterCat(\'治愈\')" style="background:#fff;border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.04)">'+
+        '<div onclick="filterCat(\'全部\')" style="background:#fff;border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.04)">'+
           '<div style="font-size:24px;margin-bottom:6px">🌙</div>'+
           '<div style="font-size:14px;font-weight:600;color:#333;margin-bottom:4px">睡前小故事</div>'+
           '<div style="font-size:11px;color:#999">温馨治愈</div>'+
@@ -1502,7 +1502,7 @@ function selectHomeCategory(cat,el){
 }
 
 async function renderHomeNovels(){
-  var listEl=document.getElementById('home-novels-list');
+  var listEl=getElement('home-novels-list');
   if(!listEl)return;
   listEl.innerHTML='<div style="text-align:center;padding:40px 10px;color:#aaa;font-size:13px">加载中...</div>';
   var list=await fetchHomeNovels(currentHomeCategory);
@@ -1518,12 +1518,12 @@ async function renderHomeNovels(){
 
 function startBanner(){if(bannerTimer)clearInterval(bannerTimer);bannerTimer=setInterval(function(){const s=document.querySelectorAll('#banner-wrap .banner-slide');if(!s.length)return;if(s[bannerIndex].style)s[bannerIndex].style.opacity='0';bannerIndex=(bannerIndex+1)%s.length;if(s[bannerIndex].style)s[bannerIndex].style.opacity='1';},3500)}
 
-function filterCat(cat){document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));event.target.classList.add('active');if(cat==='全部'){renderHome();return}const f=NOVELS.filter(n=>n.cat===cat);document.getElementById('home-content').innerHTML='<div class="section"><div class="section-header"><span class="section-title">'+cat+'</span></div><div class="novel-list-v">'+f.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div></div>'}
+function filterCat(cat){document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));if(event.target.classList.contains('cat-pill')){event.target.classList.add('active');}if(cat==='全部'){renderHome();return}const f=NOVELS.filter(n=>n.cat===cat);document.getElementById('home-content').innerHTML='<div class="section"><div class="section-header"><span class="section-title">'+cat+'</span></div><div class="novel-list-v">'+f.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div></div>'}
 
 document.getElementById('home-tabs').addEventListener('click',e=>{if(!e.target.classList.contains('tab'))return;document.querySelectorAll('#home-tabs .tab').forEach(t=>t.classList.remove('active'));e.target.classList.add('active');currentTab=e.target.dataset.tab;renderHome()});
 
 function renderBookstore(){
-  const c=document.getElementById('bookstore-content');
+  const c=getElement('bookstore-content');
   if(currentBTab==='recommend'){
     const sorted=[...NOVELS].sort((a,b)=>{const p=h=>{if(h.includes('万'))return parseFloat(h);return 0};return p(b.heat)-p(a.heat)});
     c.innerHTML='<div class="rank-panel"><div class="section"><div class="section-header"><span class="section-title">推荐榜</span></div><div class="rank-list">'+sorted.map((n,i)=>'<div class="rank-item" onclick="openDetail('+n.id+')"><div class="rank-num '+(i<3?'top3':'')+'">'+(i+1)+'</div><div class="rank-info"><div class="rank-title">'+n.title+'</div><div class="rank-author">'+n.author+' · '+n.cat+' · '+n.readTime+'</div></div><div class="rank-heat">'+n.heat+'</div></div>').join('')+'</div></div></div>'+
@@ -1554,7 +1554,7 @@ function toggleNightMode(){
 
 function renderCategory(){
   const catData=[{name:'玄幻',emoji:'⚔️',count:3},{name:'都市',emoji:'🏙️',count:4},{name:'言情',emoji:'💕',count:2},{name:'悬疑',emoji:'🔍',count:4},{name:'科幻',emoji:'🚀',count:3},{name:'武侠',emoji:'🗡️',count:2},{name:'历史',emoji:'📜',count:2}];
-  document.getElementById('category-content').innerHTML='<div class="cat-grid">'+catData.map(c=>'<div class="cat-card" onclick="filterCat(\''+c.name+'\');showPage(\'home\')"><div class="emoji">'+c.emoji+'</div><div class="name">'+c.name+'</div><div class="count">'+c.count+'篇</div></div>').join('')+'</div><div class="section"><div class="section-header"><span class="section-title">全部作品</span></div><div class="novel-list-v">'+NOVELS.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div></div>';
+  getElement('category-content').innerHTML='<div class="cat-grid">'+catData.map(c=>'<div class="cat-card" onclick="filterCat(\''+c.name+'\');showPage(\'home\')"><div class="emoji">'+c.emoji+'</div><div class="name">'+c.name+'</div><div class="count">'+c.count+'篇</div></div>').join('')+'</div><div class="section"><div class="section-header"><span class="section-title">全部作品</span></div><div class="novel-list-v">'+NOVELS.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div></div>';
 }
 
 function renderCommunity(){
@@ -2317,12 +2317,16 @@ async function initMoxiangApp(){
   if(nid){const n=getNovel(nid);if(n)openDetail(nid);}
 }
 // ========== OPTIMIZE: 性能优化增强 ==========
-// 1. TTS播放状态管理优化
+// 1. TTS播放状态管理优化 - 初始化时包装确保引用正确
 let ttsIsPlaying=false,ttsIsPaused=false;
-const origStartTTS=startTTS,origPauseTTS=pauseTTS,origStopTTS=stopTTS;
-startTTS=function(){if(ttsIsPlaying&&!ttsIsPaused){toast('正在播放中');return;}origStartTTS();ttsIsPlaying=true;ttsIsPaused=false;};
-pauseTTS=function(){origPauseTTS();ttsIsPaused=!ttsIsPaused;};
-stopTTS=function(){origStopTTS();ttsIsPlaying=false;ttsIsPaused=false;};
+function initTTSState(){
+  if(typeof startTTS==='function'&&typeof pauseTTS==='function'&&typeof stopTTS==='function'){
+    const origStartTTS=startTTS,origPauseTTS=pauseTTS,origStopTTS=stopTTS;
+    startTTS=function(){if(ttsIsPlaying&&!ttsIsPaused){toast('正在播放中');return;}origStartTTS();ttsIsPlaying=true;ttsIsPaused=false;};
+    pauseTTS=function(){origPauseTTS();ttsIsPaused=!ttsIsPaused;};
+    stopTTS=function(){origStopTTS();ttsIsPlaying=false;ttsIsPaused=false;};
+  }
+}
 
 // 2. LocalStorage防抖优化
 const debounce=function(fn,delay){let t;return function(){clearTimeout(t);t=setTimeout(()=>fn.apply(this,arguments),delay);};};
@@ -2335,13 +2339,19 @@ saveSettings=debounce(origSaveSettings,300);
 const domCache={};
 function getElement(id){if(!domCache[id])domCache[id]=document.getElementById(id);return domCache[id];}
 
-// 4. 图片加载容错优化
-document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('img').forEach(img=>{
-    img.onerror=function(){this.style.display='none';};
-    img.loading='lazy';
-  });
-});
+// 4. 图片加载容错优化 - 立即执行确保生效
+(function(){
+  function setupImages(){
+    document.querySelectorAll('img').forEach(img=>{
+      img.onerror=function(){this.style.display='none';};
+      if(!img.loading)img.loading='lazy';
+    });
+  }
+  setupImages();
+  // 监听动态内容
+  const observer=new MutationObserver(setupImages);
+  observer.observe(document.body,{childList:true,subtree:true});
+})();
 
 // 5. CSS动画硬件加速优化
 const style=document.createElement('style');
@@ -2350,6 +2360,6 @@ document.head.appendChild(style);
 
 // ========== END OPTIMIZE ==========
 
-initMoxiangApp();
+initTTSState();initMoxiangApp();
 </script>
 </body>
