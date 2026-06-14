@@ -536,7 +536,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
     <div class="section">
       <div class="section-header"><span style="font-weight:600;font-size:15px">🔥 书友推荐</span></div>
       <div class="novel-list-v">
-        <div class="novel-item" onclick="openPostDetail('post_demo1')">
+        <div class="novel-item" onclick="alert('📖 《窥孔》- 书友1234\n\n💬 完整书评：\n强烈推荐！这是我最近看过最吓人的悬疑短篇小说！\n\n那个猫眼的设定真的绝了，越往后看越毛骨悚然，最后反转直接起鸡皮疙瘩！\n\n5000字一口气看完，全程无尿点，喜欢悬疑的一定要看！')">
           <div class="cover-placeholder" style="background:#FF6B6B"><div style="font-size:28px;opacity:0.3;margin-bottom:4px">◈</div><div style="font-size:14px;font-weight:700;line-height:1.3">窥孔</div><div style="font-size:10px;opacity:0.7;margin-top:3px">悬疑</div></div>
           <div class="novel-info">
             <h4>《窥孔》</h4>
@@ -545,7 +545,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
             <div class="novel-stats"><span>🔥 8562</span><span>⭐ 4.9</span><button onclick="event.stopPropagation();window.open('https://fanqienovel.com/','_blank')" style="background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">🍅 去阅读</button></div>
           </div>
         </div>
-        <div class="novel-item" onclick="openPostDetail('post_demo2')">
+        <div class="novel-item" onclick="alert('📖 《道诡异仙》- 书友5678\n\n💬 完整书评：\n神作不解释！看了三遍还在回味！\n\n坐忘道yyds！李火旺这个人物塑造得太成功了，亦真亦幻的写法让人欲罢不能。\n\n没看过的赶紧去番茄看，绝对不亏！')">
           <div class="cover-placeholder" style="background:#4ECDC4"><div style="font-size:28px;opacity:0.3;margin-bottom:4px">✦</div><div style="font-size:14px;font-weight:700;line-height:1.3">道诡异仙</div><div style="font-size:10px;opacity:0.7;margin-top:3px">玄幻</div></div>
           <div class="novel-info">
             <h4>《道诡异仙》</h4>
@@ -554,7 +554,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
             <div class="novel-stats"><span>🔥 12450</span><span>⭐ 5.0</span><button onclick="event.stopPropagation();window.open('https://fanqienovel.com/','_blank')" style="background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">🍅 去阅读</button></div>
           </div>
         </div>
-        <div class="novel-item" onclick="openPostDetail('post_demo3')">
+        <div class="novel-item" onclick="alert('📖 《我在精神病院学斩神》- 书友9012\n\n💬 完整书评：\n前期封神！前面几十章看得我热血沸腾！\n\n"前方华夏，神明禁行"这句话直接泪目。\n\n番茄爆款不是没有道理的，强烈推荐给喜欢都市异能的朋友！')">
           <div class="cover-placeholder" style="background:#45B7D1"><div style="font-size:28px;opacity:0.3;margin-bottom:4px">☆</div><div style="font-size:14px;font-weight:700;line-height:1.3">斩神</div><div style="font-size:10px;opacity:0.7;margin-top:3px">都市</div></div>
           <div class="novel-info">
             <h4>《我在精神病院学斩神》</h4>
@@ -2565,57 +2565,12 @@ function submitPost(){
   };
   USER_POSTS.unshift(post);
   savePosts();
-  alert('✅ 发布成功！');
+  alert('✅ 发布成功！刷新首页即可看到你的帖子');
   document.getElementById('post-title').value='';
   document.getElementById('post-content').value='';
   document.getElementById('post-link').value='';
-  // 直接打开刚发布的帖子详情页
-  openPostDetail(newPost.id);
+  showPage('home');
 }
-// 打开书评详情（楼中楼样式）
-function openPostDetail(postId) {
-  const post = USER_POSTS.find(p => p.id === postId) || DEFAULT_POSTS.find(p => p.id === postId);
-  if (!post) return;
-  
-  const html = `
-    <div style="background:#fff;border-radius:12px;padding:16px;margin-bottom:12px">
-      <div style="display:flex;gap:12px;margin-bottom:12px">
-        <div class="cover-placeholder" style="width:80px;min-width:80px;background:#FF6B6B">
-          <div style="font-size:20px;opacity:0.3;margin-bottom:2px">◈</div>
-          <div style="font-size:12px;font-weight:700;line-height:1.2">${post.title.replace(/[《》]/g,'')}</div>
-          <div style="font-size:9px;opacity:0.7;margin-top:2px">${post.cat}</div>
-        </div>
-        <div style="flex:1">
-          <h3 style="font-size:18px;font-weight:700;margin-bottom:6px">${post.title}</h3>
-          <div style="font-size:13px;color:#666;margin-bottom:8px">${post.author} · ${post.time || '刚刚'}</div>
-          <div style="display:flex;gap:16px;font-size:13px;color:#888">
-            <span>🔥 ${post.hot}</span>
-            <span>⭐ ${post.rating}</span>
-            <span class="novel-tag">${post.cat}</span>
-          </div>
-        </div>
-      </div>
-      <div style="border-top:1px solid #eee;padding-top:12px">
-        <div style="font-size:15px;line-height:1.8;color:#333">${post.desc}</div>
-      </div>
-    </div>
-    
-    <div onclick="window.open('${post.link}','_blank')" style="text-align:center;padding:15px;background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:12px">
-      🍅 点击去番茄小说阅读全文
-    </div>
-    
-    <div style="background:#fff;border-radius:12px;padding:16px">
-      <div style="font-weight:600;margin-bottom:12px">💬 评论区</div>
-      <div style="text-align:center;color:#999;font-size:14px;padding:20px 0">
-        还没有评论，快来抢沙发吧~
-      </div>
-    </div>
-  `;
-  
-  document.getElementById('post-detail-content').innerHTML = html;
-  showPage('post-detail');
-}
-
 function renderUserPosts(){
   if(USER_POSTS.length===0)return '';
   let html='<div class="section"><div class="section-header"><span style="font-weight:600;font-size:15px">🔥 书友推荐</span></div><div class="novel-list-v">';
