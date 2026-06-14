@@ -2284,6 +2284,7 @@ async function initMoxiangApp(){
   if(nmBtn&&document.body.classList.contains('night-mode')){nmBtn.textContent='☀️';}
   renderHome();
   renderMyPage();
+  showPage('home');
   const nid=new URLSearchParams(location.search).get('novel');
   if(nid){const n=getNovel(nid);if(n)openDetail(nid);}
 }
