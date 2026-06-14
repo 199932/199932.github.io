@@ -586,6 +586,43 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
   <div id="community-content"></div>
 </div>
 
+<div class="page post-page" id="page-post">
+  <div class="top-bar">
+    <div class="back-btn" onclick="showPage('home')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>返回</div>
+    <div style="flex:1;text-align:center;font-size:15px;font-weight:600">发布书评</div>
+    <div style="width:50px"></div>
+  </div>
+  <div style="padding:16px">
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:8px">📚 小说名称</label>
+      <input id="post-title" placeholder="输入小说名称，如：《窥孔》" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none">
+    </div>
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:8px">🏷️ 选择分类</label>
+      <select id="post-category" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;background:var(--white)">
+        <option value="悬疑">悬疑恐怖</option>
+        <option value="都市">都市情感</option>
+        <option value="言情">言情治愈</option>
+        <option value="科幻">科幻脑洞</option>
+        <option value="玄幻">玄幻仙侠</option>
+        <option value="武侠">武侠江湖</option>
+        <option value="历史">历史军事</option>
+        <option value="其他">其他</option>
+      </select>
+    </div>
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:8px">💬 推荐理由（书评）</label>
+      <textarea id="post-content" placeholder="写下你的真实阅读体验，推荐理由..." style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none;min-height:150px;resize:vertical;font-family:inherit"></textarea>
+    </div>
+    <div style="margin-bottom:24px">
+      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:8px">🔗 阅读链接（选填）</label>
+      <input id="post-link" placeholder="番茄/七猫等平台链接" style="width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;font-size:14px;outline:none">
+    </div>
+    <button onclick="submitPost()" style="width:100%;padding:14px;background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer">🚀 发布书评</button>
+    <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text3)">发布后将展示在首页，人人可见</div>
+  </div>
+</div>
+
 <div class="page creator-page" id="page-creator">
   <div class="creator-header"><h2>创作者中心</h2></div>
   <div class="creator-tabs">
@@ -715,6 +752,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
   <div class="nav-item active" data-page="home" onclick="showPage('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>首页</span></div>
   <div class="nav-item" data-page="bookstore" onclick="showPage('bookstore')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>书城</span></div>
   <div class="nav-item" data-page="category" onclick="showPage('category')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg><span>分类</span></div>
+  <div class="nav-item" data-page="post" onclick="showPage('post')" style="color:#FF4757"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg><span>发布</span></div>
   <div class="nav-item" data-page="bookshelf" onclick="showPage('bookshelf')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><span>书架</span></div>
   <div class="nav-item" data-page="login" onclick="showPage('login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
 </nav>
@@ -2451,6 +2489,62 @@ style.textContent='.banner-slide,.nav-item,.tab,.btn-primary,.btn-outline{transf
 document.head.appendChild(style);
 
 // ========== END OPTIMIZE ==========
+
+// ========== 用户发帖功能 ==========
+let USER_POSTS=JSON.parse(localStorage.getItem('moxiang_posts')||'[]');
+function savePosts(){localStorage.setItem('moxiang_posts',JSON.stringify(USER_POSTS))}
+function submitPost(){
+  const title=document.getElementById('post-title').value.trim();
+  const category=document.getElementById('post-category').value;
+  const content=document.getElementById('post-content').value.trim();
+  const link=document.getElementById('post-link').value.trim();
+  if(!title){alert('请输入小说名称');return}
+  if(!content){alert('请写推荐理由');return}
+  const post={
+    id:'post_'+Date.now(),
+    title:title,
+    author:'书友'+Math.floor(Math.random()*9000+1000),
+    cat:category,
+    desc:content,
+    link:link||'https://fanqienovel.com/',
+    words:content.length,
+    hot:Math.floor(Math.random()*5000+1000),
+    rating:(4.0+Math.random()*1.0).toFixed(1),
+    cover:Math.floor(Math.random()*16),
+    isUserPost:true,
+    time:new Date().toLocaleString()
+  };
+  USER_POSTS.unshift(post);
+  savePosts();
+  alert('✅ 发布成功！将展示在首页');
+  document.getElementById('post-title').value='';
+  document.getElementById('post-content').value='';
+  document.getElementById('post-link').value='';
+  renderHomePage();
+  showPage('home');
+}
+function renderUserPosts(){
+  if(USER_POSTS.length===0)return '';
+  let html='<div class="section"><div class="section-header"><span style="font-weight:600;font-size:15px">🔥 书友推荐</span></div><div class="novel-list-v">';
+  USER_POSTS.slice(0,6).forEach(n=>{
+    html+='<div class="novel-item" onclick="openDetail(\''+n.id+'\')">'+coverHTML(n)+'<div class="novel-info"><h4>'+n.title+'</h4><div class="novel-meta"><span class="novel-tag">'+n.cat+'</span><span>'+n.author+'</span></div><p class="novel-desc">'+(n.desc.length>50?n.desc.slice(0,50)+'…':n.desc)+'</p><div class="novel-stats"><span>🔥 '+n.hot+'</span><span>⭐ '+n.rating+'</span><button onclick="event.stopPropagation();window.open(\''+n.link+'\',\'_blank\')" style="background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">🍅 去阅读</button></div></div></div>';
+  });
+  html+='</div></div>';
+  return html;
+}
+// 重写首页渲染，加入用户帖子
+const originalRenderHome=renderHomePage;
+renderHomePage=function(){
+  const home=document.getElementById('page-home');
+  home.innerHTML='<div class="top-bar"><div style="font-size:20px;font-weight:700">📖 墨香阁</div></div>'+
+  '<div class="banner-wrap"><div class="banner-slide active"><div class="banner-bg" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)"></div><div class="banner-info"><h2>小说书评导航站</h2><p>发现好书，分享真实阅读体验</p></div></div></div>'+
+  renderUserPosts()+
+  '<div class="section"><div class="section-header"><span style="font-weight:600;font-size:15px">📚 精选推荐</span></div><div class="novel-list-v">';
+  NOVELS.forEach(n=>{
+    home.innerHTML+='<div class="novel-item" onclick="openDetail(\''+n.id+'\')">'+coverHTML(n)+'<div class="novel-info"><h4>'+n.title+'</h4><div class="novel-meta"><span class="novel-tag">'+n.cat+'</span><span>'+n.author+'</span></div><p class="novel-desc">'+(n.desc.length>50?n.desc.slice(0,50)+'…':n.desc)+'</p><div class="novel-stats"><span>🔥 '+n.hot+'</span><span>⭐ '+n.rating+'</span><button onclick="event.stopPropagation();window.open(\'https://fanqienovel.com/\',\'_blank\')" style="background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">🍅 去番茄阅读</button></div></div></div>';
+  });
+  home.innerHTML+='</div></div>';
+};
 
 initMoxiangApp();
 </script>
