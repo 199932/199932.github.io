@@ -2575,7 +2575,7 @@ function renderUserPosts(){
   if(USER_POSTS.length===0)return '';
   let html='<div class="section"><div class="section-header"><span style="font-weight:600;font-size:15px">🔥 书友推荐</span></div><div class="novel-list-v">';
   USER_POSTS.slice(0,6).forEach(n=>{
-    html+='<div class="novel-item" onclick="openPostDetail(\''+n.id+'\')">'+coverHTML(n)+'<div class="novel-info"><h4>'+n.title+'</h4><div class="novel-meta"><span class="novel-tag">'+n.cat+'</span><span>'+n.author+'</span></div><p class="novel-desc">'+(n.desc.length>50?n.desc.slice(0,50)+'…':n.desc)+'</p><div class="novel-stats"><span>🔥 '+n.hot+'</span><span>⭐ '+n.rating+'</span><button onclick="event.stopPropagation();window.open(\''+n.link+'\',\'_blank\')" style="background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">🍅 去阅读</button></div></div></div>';
+    html+='<div class="novel-item" onclick="alert(\'📖 '+n.title+\' - \'+n.author+\'\\n\\n💬 完整书评：\\n\'+n.desc.replace(/\'/g,\"\\\\'\")+\'\')">'+coverHTML(n)+'<div class="novel-info"><h4>'+n.title+'</h4><div class="novel-meta"><span class="novel-tag">'+n.cat+'</span><span>'+n.author+'</span></div><p class="novel-desc">'+(n.desc.length>50?n.desc.slice(0,50)+'…':n.desc)+'</p><div class="novel-stats"><span>🔥 '+n.hot+'</span><span>⭐ '+n.rating+'</span><button onclick="event.stopPropagation();window.open(\''+n.link+'\',\'_blank\')" style="background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">🍅 去阅读</button></div></div></div>';
   });
   html+='</div></div>';
   return html;
