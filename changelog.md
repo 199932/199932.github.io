@@ -1,4 +1,21 @@
 # 墨香阁 Changelog
+## v1.3 - 2026-06-14 P0致命bug专项修复
+### 🐛 Bug修复（共2项，严格遵循最小改动原则）
+#### 1. initMoxiangApp异常捕获修复
+- **问题**：`await syncServerUser()`和`await loadServerNovels()`在本地file://协议下调用API会抛出异常，导致后面的`renderHome()`永远不会执行
+- **影响**：首页小说列表完全不加载，用户看到大面积空白，网站完全不可用
+- **修复**：给两个await调用分别添加try-catch包裹，确保异常不阻塞后续渲染
+  ```javascript
+  try{await syncServerUser();}catch(e){}
+  try{await loadServerNovels();}catch(e){}
+  ```
+- **验证**：本地file://协议下不再卡住，首页16篇小说正常渲染
+#### 2. 图片加载失败兜底修复
+- **问题**：logo和momo头像使用不存在的本地图片路径，加载失败后显示破损图标
+- **影响**：给用户"网站坏掉了"的第一印象，严重影响信任
+- **修复**：给两个img标签添加`onerror="this.style.display='none'"`，加载失败时自动隐藏
+- **验证**：图片加载失败时自动隐藏，视觉上干净整洁，无破损图标
+---
 ## v1.2 - 2026-06-14 阅读器专项修复
 ### 🐛 Bug修复（共2项，严格遵循最小改动原则）
 #### 1. 阅读设置弹窗高度修复
