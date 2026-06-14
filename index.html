@@ -2491,7 +2491,13 @@ document.head.appendChild(style);
 // ========== END OPTIMIZE ==========
 
 // ========== 用户发帖功能 ==========
+const DEFAULT_POSTS=[
+  {id:'post_demo1',title:'《窥孔》',author:'书友1234',cat:'悬疑',desc:'强烈推荐！这是我最近看过最吓人的悬疑短篇小说！那个猫眼的设定真的绝了，越往后看越毛骨悚然，最后反转直接起鸡皮疙瘩！5000字一口气看完，全程无尿点，喜欢悬疑的一定要看！',link:'https://fanqienovel.com/',hot:8562,rating:'4.9',cover:3,isUserPost:true,time:'2026-06-14'},
+  {id:'post_demo2',title:'《道诡异仙》',author:'书友5678',cat:'玄幻',desc:'神作不解释！看了三遍还在回味，坐忘道yyds！李火旺这个人物塑造得太成功了，亦真亦幻的写法让人欲罢不能。没看过的赶紧去番茄看，绝对不亏！',link:'https://fanqienovel.com/',hot:12450,rating:'5.0',cover:7,isUserPost:true,time:'2026-06-13'},
+  {id:'post_demo3',title:'《我在精神病院学斩神》',author:'书友9012',cat:'都市',desc:'前期封神！前面几十章看得我热血沸腾，"前方华夏，神明禁行"这句话直接泪目。番茄爆款不是没有道理的，强烈推荐给喜欢都市异能的朋友！',link:'https://fanqienovel.com/',hot:15680,rating:'4.8',cover:11,isUserPost:true,time:'2026-06-12'}
+];
 let USER_POSTS=JSON.parse(localStorage.getItem('moxiang_posts')||'[]');
+if(USER_POSTS.length===0)USER_POSTS=[...DEFAULT_POSTS];
 function savePosts(){localStorage.setItem('moxiang_posts',JSON.stringify(USER_POSTS))}
 function submitPost(){
   const title=document.getElementById('post-title').value.trim();
