@@ -2538,20 +2538,15 @@ function renderUserPosts(){
   html+='</div></div>';
   return html;
 }
-// 重写首页渲染，加入用户帖子
-const originalRenderHome=renderHomePage;
-renderHomePage=function(){
-  const home=document.getElementById('page-home');
-  home.innerHTML='<div class="top-bar"><div style="font-size:20px;font-weight:700">📖 墨香阁</div></div>'+
-  '<div class="banner-wrap"><div class="banner-slide active"><div class="banner-bg" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)"></div><div class="banner-info"><h2>小说书评导航站</h2><p>发现好书，分享真实阅读体验</p></div></div></div>'+
-  renderUserPosts()+
-  '<div class="section"><div class="section-header"><span style="font-weight:600;font-size:15px">📚 精选推荐</span></div><div class="novel-list-v">';
-  NOVELS.forEach(n=>{
-    home.innerHTML+='<div class="novel-item" onclick="openDetail(\''+n.id+'\')">'+coverHTML(n)+'<div class="novel-info"><h4>'+n.title+'</h4><div class="novel-meta"><span class="novel-tag">'+n.cat+'</span><span>'+n.author+'</span></div><p class="novel-desc">'+(n.desc.length>50?n.desc.slice(0,50)+'…':n.desc)+'</p><div class="novel-stats"><span>🔥 '+n.hot+'</span><span>⭐ '+n.rating+'</span><button onclick="event.stopPropagation();window.open(\'https://fanqienovel.com/\',\'_blank\')" style="background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">🍅 去番茄阅读</button></div></div></div>';
-  });
-  home.innerHTML+='</div></div>';
-};
 
 initMoxiangApp();
+
+// 在首页最前面插入用户帖子
+setTimeout(function() {
+  const homeContent = document.getElementById('home-content');
+  if (homeContent && renderUserPosts()) {
+    homeContent.insertAdjacentHTML('afterbegin', renderUserPosts());
+  }
+}, 100);
 </script>
 </body>
