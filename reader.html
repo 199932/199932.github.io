@@ -31,7 +31,7 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Ro
 .reader-footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--reader-bg);border-top:1px solid rgba(0,0,0,0.05);display:flex;justify-content:center;gap:30px;padding:10px 24px;padding-bottom:calc(10px + env(safe-area-inset-bottom));z-index:50}
 .reader-footer button{font-size:14px;color:var(--text2);padding:8px 16px;background:transparent;border:none;cursor:pointer;border-radius:8px}
 .reader-footer button:hover{background:rgba(0,0,0,0.05)}
-.reader-settings{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--white);border-radius:16px 16px 0 0;padding:20px 24px 30px;z-index:200;display:none;box-shadow:0 -4px 20px rgba(0,0,0,0.1)}
+.reader-settings{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--white);border-radius:16px 16px 0 0;padding:20px 24px 30px;z-index:200;display:none;box-shadow:0 -4px 20px rgba(0,0,0,0.1);min-height:320px}
 .reader-settings.show{display:block}
 .reader-settings h4{font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text)}
 .setting-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -113,7 +113,7 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Ro
       <div class="theme-option t-dark" onclick="changeTheme('dark')">黑</div>
     </div>
   </div>
-  <div class="setting-row" style="margin-top:16px">
+  <div class="setting-row" style="margin-top:16px;display:none">
     <label>AI听书</label>
     <div class="btns" style="gap:4px">
       <button onclick="startTTS()" style="width:auto;padding:0 16px;background:var(--primary);color:#fff">播放</button>
