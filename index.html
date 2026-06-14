@@ -6,7 +6,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>墨香阁 - 原创短篇 · 一话完结 📖</title>
+<title>墨香阁 - 小说书评导航 · 发现好书 📖</title>
 <style>
 :root{--primary:#4A6FA5;--primary-light:#6B8FC5;--primary-dark:#3A5A8A;--bg:#F5F5F5;--white:#FFF;--text:#333;--text2:#666;--text3:#999;--border:#EEE;--divider:#F0F0F0;--radius:8px;--danger:#FF6B6B;--success:#4ECDC4}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -530,7 +530,7 @@ body.night-mode .novel-meta,body.night-mode .novel-desc,body.night-mode .text3,b
   </div>
   <div class="momo-welcome" id="momo-welcome">
     <img src="./momo-small.png" alt="momo">
-    <div class="welcome-text"><strong>momo</strong> 欢迎来到墨香阁！<br>这里每一篇故事都是原创短篇，6分钟读完一个好故事</div>
+    <div class="welcome-text"><strong>墨香阁</strong> 小说书评导航站<br>发现好书，分享真实阅读体验，跳转直达平台阅读</div>
   </div>
   <div id="home-content"></div>
 </div>
@@ -1552,7 +1552,7 @@ function novelCardHTML(n,idx){
       (descText?('<div style="font-size:13px;color:#666;line-height:1.55;margin-bottom:10px;min-height:20px">'+descText+'</div>'):'')+
       '<div style="display:flex;align-items:center;justify-content:space-between">'+
         '<div style="font-size:12px;color:#aaa">📖 '+wc+' 字 · ⏱ '+rt+(timeText?' · '+timeText:'')+'</div>'+
-        '<button onclick="event.stopPropagation();openReader(\''+n.id+'\')" style="background:linear-gradient(135deg,#4A6FA5,#6B8FC5);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">阅读全文</button>'+
+        '<button onclick="event.stopPropagation();window.open(\'https://fanqienovel.com/\',\'_blank\')" style="background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">🍅 去番茄阅读</button>'+
       '</div>'+
     '</div>'+
   '</div>';
@@ -1776,7 +1776,7 @@ function openDetail(nid){
     (paragraphs.length?('<div style="background:#F5ECD7;padding:18px 18px 24px;margin-top:6px">'+
       '<div style="font-size:13px;font-weight:600;color:#6A4E2A;margin-bottom:10px;padding-left:2px">📖 正文预览</div>'+
       paragraphs.slice(0,6).map(function(p){return '<p style="font-size:17px;color:#3A2E1D;line-height:1.85;text-indent:2em;margin:0 0 14px 0">'+p+'</p>';}).join('')+
-      (paragraphs.length>6?'<div onclick="openReader(\''+n.id+'\')" style="text-align:center;padding:12px;color:#8B6B3C;font-size:13px;font-weight:500;cursor:pointer;border-top:1px dashed rgba(139,107,60,0.3);margin-top:10px">继续阅读全文 →</div>':'')+
+      '<div onclick="window.open(\'https://fanqienovel.com/\',\'_blank\')" style="text-align:center;padding:15px;margin:15px;background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer">🍅 点击去番茄小说阅读全文</div>'+
     '</div>'):'')+
     '<div style="background:#fff;padding:16px;margin-top:6px">'+
       '<div style="font-size:14px;font-weight:700;color:#222;margin-bottom:10px">读者评论</div>'+
