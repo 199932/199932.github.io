@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布新故事 · 墨香阁</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo">
+                <div class="logo-icon">墨</div>
+                <div class="logo-text">
+                    <h1>墨香阁</h1>
+                    <p>原创短篇 · 一话完结</p>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">首页</a>
+                <a href="publish.html" class="active">发布</a>
+                <a href="index.html#about">关于</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 发布表单 -->
+    <main class="publish-page">
+        <h2>发布新故事</h2>
+        <p class="subtitle">故事将以 Issue 存储到 GitHub，永久保留</p>
+
+        <!-- Token 设置 -->
+        <div class="tips-box">
+            <strong>🔑 第一步：</strong>请先设置你的 GitHub Token。<br>
+            <div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <input type="text" id="token-input" placeholder="输入 ghp_xxxxxxxxxxxxxxxx" style="flex:1;min-width:200px;padding:8px 12px;border:1px solid #e8e0d0;border-radius:6px;font-size:13px;">
+                <button id="save-token" style="background:#8b6f47;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:13px;">保存</button>
+                <a href="https://github.com/settings/tokens/new?scopes=public_repo" target="_blank" style="color:#8b6f47;font-size:13px;text-decoration:underline;">获取 Token（仅勾选 public_repo）</a>
+            </div>
+            <div id="token-status" style="margin-top:8px;font-size:12px;color:#8b7355;"></div>
+        </div>
+
+        <!-- 发布表单 -->
+        <form id="publish-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="story-title">故事标题</label>
+                    <input type="text" id="story-title" placeholder="例如：银杏树下" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="story-category">分类</label>
+                    <select id="story-category">
+                        <option value="原创">原创</option>
+                        <option value="都市">都市</option>
+                        <option value="玄幻">玄幻</option>
+                        <option value="言情">言情</option>
+                        <option value="科幻">科幻</option>
+                        <option value="悬疑">悬疑</option>
+                        <option value="历史">历史</option>
+                        <option value="武侠">武侠</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="story-body">故事内容</label>
+                <textarea id="story-body" placeholder="支持 Markdown 格式... 换行即换行"></textarea>
+                <div class="char-count"><span id="char-count">0 字</span></div>
+            </div>
+
+            <button type="submit" id="submit-btn" class="submit-btn">发布故事</button>
+            <div id="status" class="status-msg" style="display:none;"></div>
+        </form>
+
+        <!-- 使用说明 -->
+        <div class="tips-box" style="margin-top:32px;">
+            <strong>📖 使用说明：</strong>
+            <ul style="margin-left:20px;margin-top:8px;line-height:1.8;">
+                <li>每个故事对应一个 GitHub Issue</li>
+                <li>故事标题 = Issue 标题</li>
+                <li>首次发布后自动跳转到首页查看</li>
+                <li>Token 仅保存在你的浏览器，不上传</li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 墨香阁 · 基于 GitHub Issues 构建</p>
+            <p class="footer-note">当前为演示版本 · 所有数据来自 GitHub</p>
+        </div>
+    </footer>
+
+    <!-- 核心脚本 -->
+    <script src="js/app.js"></script>
+    <script>
+        // Token 管理逻辑
+        document.addEventListener('DOMContentLoaded', () => {
+            const tokenInput = document.getElementById('token-input');
+            const saveBtn = document.getElementById('save-token');
+            const tokenStatus = document.getElementById('token-status');
+            const statusEl = document.getElementById('status');
+
+            // 显示当前 Token 状态
+            const existing = localStorage.getItem('gh_token');
+            if (existing) {
+                tokenStatus.innerHTML = '✅ 已检测到 Token (' + existing.substring(0, 6) + '....' + existing.substring(existing.length - 4) + ')';
+                tokenInput.value = existing;
+            } else {
+                tokenStatus.innerHTML = '⚠️ 尚未设置 Token，未设置 Token 无法发布';
+            }
+
+            saveBtn.addEventListener('click', () => {
+                const val = tokenInput.value.trim();
+                if (val) {
+                    localStorage.setItem('gh_token', val);
+                    CONFIG.token = val;
+                    tokenStatus.innerHTML = '✅ Token 已保存！现在可以发布了';
+                    statusEl.style.display = 'block';
+                    statusEl.className = 'status-msg success';
+                    statusEl.textContent = 'Token 设置成功，现在可以填写并发布故事';
+                    setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+                } else {
+                    tokenStatus.innerHTML = '⚠️ 请输入有效的 Token';
+                }
+            });
+
+            // 初始化发布功能
+            app.initPublish();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>墨香阁 · 发现好书</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="logo">
+                <div class="logo-icon">墨</div>
+                <div class="logo-text">
+                    <h1>墨香阁</h1>
+                    <p>原创短篇 · 一话完结</p>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="active">首页</a>
+                <a href="publish.html">发布</a>
+                <a href="#about">关于</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h2>欢迎来到墨香阁</h2>
+            <p>这里每一篇故事都是原创短篇，6分钟读完一个好故事</p>
+        </div>
+    </section>
+
+    <!-- 分类标签 -->
+    <section class="categories container">
+        <span class="cat-tag active" data-cat="全部">全部</span>
+        <span class="cat-tag" data-cat="原创">原创</span>
+        <span class="cat-tag" data-cat="都市">都市</span>
+        <span class="cat-tag" data-cat="玄幻">玄幻</span>
+        <span class="cat-tag" data-cat="言情">言情</span>
+        <span class="cat-tag" data-cat="科幻">科幻</span>
+        <span class="cat-tag" data-cat="悬疑">悬疑</span>
+        <span class="cat-tag" data-cat="历史">历史</span>
+        <span class="cat-tag" data-cat="武侠">武侠</span>
+        <span class="cat-tag" data-cat="其他">其他</span>
+    </section>
+
+    <!-- 故事列表 -->
+    <main class="container">
+        <div id="article-list">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>正在从云端加载故事...</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="load-more" style="display:none;">加载更多</button>
+        </div>
+    </main>
+
+    <!-- 详情弹窗 -->
+    <div id="modal" class="modal" onclick="this.style.display='none'">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>© 墨香阁 · 基于 GitHub Issues 构建的永久存储系统</p>
+            <p class="footer-note">当前为演示版本 · 所有数据来自 GitHub</p>
+        </div>
+    </footer>
+
+    <!-- 核心脚本 -->
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
+</body>
+</html>
