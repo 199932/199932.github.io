@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="墨香阁">
 <link rel="manifest" href="manifest.json">
-<title>墨香阁 - 小说书评导航 · 发现好书 📖</title>
+<title>墨香阁 - AI原创短篇故事，6分钟读完一个好故事</title>
 <style>
 :root{--primary:#4A6FA5;--primary-light:#6B8FC5;--primary-dark:#3A5A8A;--bg:#F5F5F5;--white:#FFF;--text:#333;--text2:#666;--text3:#999;--border:#EEE;--divider:#F0F0F0;--radius:8px;--danger:#FF6B6B;--success:#4ECDC4}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -563,7 +563,7 @@ console.log('%c\u58a8\u9999\u9601 '+APP_VERSION,'color:#4A6FA5;font-size:14px;fo
 
 <div class="page active" id="page-home">
   <div class="top-bar">
-    <div class="logo"><img src="./moxiang-icon.png" style="height:28px;width:28px;border-radius:6px;vertical-align:middle;margin-right:4px" alt="墨香阁">墨香阁</div>
+    <div class="logo">墨香阁</div>
     <div class="search-trigger" onclick="showPage('search')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       搜索故事、作者
@@ -576,8 +576,8 @@ console.log('%c\u58a8\u9999\u9601 '+APP_VERSION,'color:#4A6FA5;font-size:14px;fo
     <div class="tab" data-tab="new">最新</div>
   </div>
   <div class="momo-welcome" id="momo-welcome">
-    <img src="./momo-small.png" alt="momo">
-    <div class="welcome-text"><strong>momo</strong> 欢迎来到墨香阁！<br>这里每一篇故事都是原创短篇，6分钟读完一个好故事</div>
+    <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#FFB6C1,#FFC8DD);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 8px rgba(255,182,193,0.4);border:2px solid #fff">�</div>
+    <div class="welcome-text"><strong>momo</strong> 欢迎来到墨香阁！<br>每一篇都是AI原创短篇，6分钟读完一个好故事</div>
   </div>
   <div id="home-content"></div>
 </div>
@@ -691,7 +691,7 @@ console.log('%c\u58a8\u9999\u9601 '+APP_VERSION,'color:#4A6FA5;font-size:14px;fo
       <span id="bottom-auto-save">自动保存中...</span>
     </div>
     <div class="publish-bar">
-      <button class="btn-publish" onclick="showPublishDialog()">🚀 一键发布到墨香阁</button>
+      <button class="btn-publish" onclick="showPublishDialog()">� 一键发布到墨香阁</button>
     </div>
   </div>
 </div>
@@ -699,7 +699,7 @@ console.log('%c\u58a8\u9999\u9601 '+APP_VERSION,'color:#4A6FA5;font-size:14px;fo
 <div class="publish-modal" id="publish-modal">
   <div class="publish-modal-content">
     <div class="publish-modal-header">
-      <h3>🚀 一键发布到墨香阁</h3>
+      <h3>� 一键发布到墨香阁</h3>
       <span class="close-btn" onclick="closePublishModal()">&times;</span>
     </div>
     <div class="publish-modal-body">
@@ -760,10 +760,10 @@ console.log('%c\u58a8\u9999\u9601 '+APP_VERSION,'color:#4A6FA5;font-size:14px;fo
 
 <nav class="bottom-nav" id="bottom-nav">
   <div class="nav-item active" data-page="home" onclick="showPage('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>首页</span></div>
-  <div class="nav-item" data-page="bookstore" onclick="showPage('bookstore')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>书城</span></div>
+  <div class="nav-item" data-page="bookstore" onclick="showPage('bookstore')" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg><span>书城</span></div>
   <div class="nav-item" data-page="category" onclick="showPage('category')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg><span>分类</span></div>
   <div class="nav-item" data-page="bookshelf" onclick="showPage('bookshelf')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg><span>书架</span></div>
-  <div class="nav-item" data-page="login" onclick="showPage('login')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
+  <div class="nav-item" data-page="login" onclick="showPage('login')" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>我的</span></div>
 </nav>
 
 <div class="tts-bar" id="tts-bar">
@@ -772,7 +772,7 @@ console.log('%c\u58a8\u9999\u9601 '+APP_VERSION,'color:#4A6FA5;font-size:14px;fo
   <button class="stop" onclick="stopTTS()">停止</button>
 </div>
 
-<div style="text-align:center;padding:16px;font-size:11px;color:var(--text3)">当前为演示版本，阅读量/热度/收益等数据均为模拟数据</div>
+<div style="text-align:center;padding:20px;font-size:12px;color:#cccccc">当前为演示版本，阅读量/热度/收益等数据均为模拟数据</div>
 </div>
 
 <div class="reader-settings" id="reader-settings">
@@ -784,7 +784,7 @@ console.log('%c\u58a8\u9999\u9601 '+APP_VERSION,'color:#4A6FA5;font-size:14px;fo
 </div>
 
 <script>
-const CATEGORIES=['全部','玄幻','都市','言情','悬疑','科幻','武侠','历史'];
+const CATEGORIES=['全部','都市','悬疑','言情','玄幻','科幻','武侠','历史'];
 const COVER_COLORS=['linear-gradient(135deg,#FF6B6B,#FF8E8E)','linear-gradient(135deg,#4ECDC4,#6EE7DE)','linear-gradient(135deg,#556270,#7B8D9E)','linear-gradient(135deg,#C04848,#D4726A)','linear-gradient(135deg,#4B79A1,#6DA4C8)','linear-gradient(135deg,#834D9B,#A56CC1)','linear-gradient(135deg,#E44D26,#F4724F)','linear-gradient(135deg,#2C7744,#4BA36A)','linear-gradient(135deg,#D4A017,#E8C547)','linear-gradient(135deg,#2980B9,#5DA0D0)','linear-gradient(135deg,#8E2DE2,#B44DE6)','linear-gradient(135deg,#ED4264,#F58B6E)','linear-gradient(135deg,#1A2980,#3D5AFE)','linear-gradient(135deg,#F7971E,#FFD200)','linear-gradient(135deg,#544A7D,#7B6FA5)','linear-gradient(135deg,#0F2027,#203A43)'];
 
 
@@ -812,7 +812,7 @@ async function fetchGithubIssues(cat){
       var desc=body.replace(/[#>*`_\-\[\]]/g,' ').replace(/\s+/g,' ').trim().slice(0,60);
       if(desc.length>=60){desc=desc+'\u2026';}
       var words=body.length;
-      var heat=Math.floor(Math.random()*500+50);
+      var heat=Math.floor(Math.random()*27000+3000);
       return {id:'gh_'+issue.number,number:issue.number,title:title,author:(issue.user&&issue.user.login)||'\u58a8\u53cb',cat:cat2,category:cat2,words:words+'\u5b57',wordCount:words,readTime:Math.max(1,Math.ceil(words/500))+'\u5206\u949f',heat:heat+'',heat_num:heat,desc:desc,description:body.slice(0,200),cover:(issue.number||i)%16,tag:cat2,rating:0,score:0,readCount:0,likeCount:0,publish_time:issue.created_at,publishTime:issue.created_at,body:body,url:issue.html_url,from_github:true};
     });
     try{localStorage.setItem('gh_issues_cache',JSON.stringify({time:Date.now(),data:novels}));}catch(e){}
@@ -863,22 +863,22 @@ function formatWorkTime(pt){
 }
 
 const NOVELS=[
-{id:1,title:'最后的灵脉',author:'云中岳',cat:'玄幻',words:'4200字',readTime:'8分钟',heat:'52万',desc:'世间最后一条灵脉即将枯竭，守脉人面临抉择：是让灵气消散，还是以自身为祭？',cover:0,tag:'一话完结',rating:4.8,score:96},
-{id:2,title:'深巷咖啡馆',author:'夜行风',cat:'都市',words:'5600字',readTime:'11分钟',heat:'38万',desc:'只在午夜出现的咖啡馆，来客都能遇见一个已经失去的人。但代价是什么？',cover:1,tag:'一话完结',rating:4.6,score:92},
-{id:3,title:'银杏树下',author:'月下蝶',cat:'言情',words:'4800字',readTime:'9分钟',heat:'45万',desc:'她和他在同一棵银杏树下相遇三次，跨越二十年。第三次，她终于说出了那句话。',cover:2,tag:'一话完结',rating:4.9,score:98},
-{id:4,title:'第七个房客',author:'寒夜烛',cat:'悬疑',words:'6200字',readTime:'12分钟',heat:'61万',desc:'老楼只有六层，但房东坚持说还有第七个房客。直到那天深夜，他听到了楼上的脚步声。',cover:3,tag:'一话完结',rating:4.7,score:94},
-{id:5,title:'星尘信使',author:'铁星河',cat:'科幻',words:'5100字',readTime:'10分钟',heat:'34万',desc:'一封来自四光年外的信，写满了思念。信使是光，而收信人已经不在了。',cover:4,tag:'一话完结',rating:4.5,score:90},
-{id:6,title:'断桥',author:'孤鸿影',cat:'武侠',words:'3900字',readTime:'7分钟',heat:'29万',desc:'桥已断，人已远。他等了十三年的对手终于来了，却发现对方早已握不住剑。',cover:5,tag:'一话完结',rating:4.4,score:88},
-{id:7,title:'长安月',author:'墨如烟',cat:'历史',words:'5500字',readTime:'11分钟',heat:'27万',desc:'上元夜，长安灯火如昼。一个小吏在人群中看到了不该出现的人。',cover:6,tag:'一话完结',rating:4.3,score:86},
-{id:8,title:'镜中人',author:'雾中灯',cat:'悬疑',words:'4700字',readTime:'9分钟',heat:'55万',desc:'镜子里的自己开始做不同的动作，起初只是细微的差异，直到有一天它冲她笑了。',cover:7,tag:'一话完结',rating:4.8,score:96},
-{id:9,title:'最后一局',author:'棋中仙',cat:'都市',words:'4300字',readTime:'8分钟',heat:'41万',desc:'退休棋手在公园里遇到一个少年，下了一盘改变两人命运的棋。',cover:8,tag:'一话完结',rating:4.5,score:90},
-{id:10,title:'人间蒸发',author:'寒夜烛',cat:'悬疑',words:'5800字',readTime:'11分钟',heat:'48万',desc:'三个互不相识的人，同一天在同一座城市消失。唯一的线索是他们都收到了同一封邮件。',cover:9,tag:'一话完结',rating:4.6,score:92},
-{id:11,title:'归途',author:'晚风吟',cat:'言情',words:'3600字',readTime:'7分钟',heat:'33万',desc:'异国他乡的机场，她遇到了十年前不告而别的初恋。十小时的航班，他们终于把话说完了。',cover:10,tag:'一话完结',rating:4.4,score:88},
-{id:12,title:'代码幽灵',author:'铁星河',cat:'科幻',words:'5400字',readTime:'10分钟',heat:'37万',desc:'程序员发现代码库中有一段没人写过的代码，运行后输出了他已故母亲的留言。',cover:11,tag:'一话完结',rating:4.7,score:94},
-{id:13,title:'烽火家书',author:'折扇先生',cat:'历史',words:'4100字',readTime:'8分钟',heat:'25万',desc:'一封寄不出的家书，在战火中辗转了四十年。当它终于到达时，收信人的孙子打开了它。',cover:12,tag:'一话完结',rating:4.2,score:84},
-{id:14,title:'雨夜来客',author:'夜行风',cat:'都市',words:'3200字',readTime:'6分钟',heat:'30万',desc:'暴雨夜，一个陌生人敲门借电话。他打完电话后说了一句：谢谢你，我们不会再见了。',cover:13,tag:'一话完结',rating:4.3,score:86},
-{id:15,title:'剑意',author:'剑归宗',cat:'武侠',words:'4500字',readTime:'9分钟',heat:'36万',desc:'师父说剑意不可传，但他用一生去悟。直到师父离世那天，他终于听懂了风声。',cover:14,tag:'一话完结',rating:4.6,score:92},
-{id:16,title:'时间商店',author:'雾中灯',cat:'科幻',words:'5900字',readTime:'12分钟',heat:'44万',desc:'巷子深处有一家可以买卖时间的商店。她用十年寿命换回了母亲最后一天的清醒。',cover:15,tag:'一话完结',rating:4.8,score:96}
+{id:1,title:'最后的灵脉',author:'云中岳',cat:'玄幻',words:'4200字',readTime:'8分钟',heat:'2.8万',desc:'世间最后一条灵脉即将枯竭，守脉人面临抉择：是让灵气消散，还是以自身为祭？',cover:0,tag:'AI原创短篇·一话完结',rating:4.7,score:96},
+{id:2,title:'深巷咖啡馆',author:'夜行风',cat:'都市',words:'5600字',readTime:'11分钟',heat:'1.5万',desc:'只在午夜出现的咖啡馆，来客都能遇见一个已经失去的人。但代价是什么？',cover:1,tag:'AI原创短篇·一话完结',rating:4.5,score:92},
+{id:3,title:'银杏树下',author:'月下蝶',cat:'言情',words:'4800字',readTime:'9分钟',heat:'8600',desc:'她和他在同一棵银杏树下相遇三次，跨越二十年。第三次，她终于说出了那句话。',cover:2,tag:'AI原创短篇·一话完结',rating:4.9,score:98},
+{id:4,title:'第七个房客',author:'寒夜烛',cat:'悬疑',words:'6200字',readTime:'12分钟',heat:'3.1万',desc:'老楼只有六层，但房东坚持说还有第七个房客。直到那天深夜，他听到了楼上的脚步声。',cover:3,tag:'AI原创短篇·一话完结',rating:4.6,score:94},
+{id:5,title:'星尘信使',author:'铁星河',cat:'科幻',words:'5100字',readTime:'10分钟',heat:'1.2万',desc:'一封来自四光年外的信，写满了思念。信使是光，而收信人已经不在了。',cover:4,tag:'AI原创短篇·一话完结',rating:4.3,score:90},
+{id:6,title:'断桥',author:'孤鸿影',cat:'武侠',words:'3900字',readTime:'7分钟',heat:'7400',desc:'桥已断，人已远。他等了十三年的对手终于来了，却发现对方早已握不住剑。',cover:5,tag:'AI原创短篇·一话完结',rating:4.4,score:88},
+{id:7,title:'长安月',author:'墨如烟',cat:'历史',words:'5500字',readTime:'11分钟',heat:'5600',desc:'上元夜，长安灯火如昼。一个小吏在人群中看到了不该出现的人。',cover:6,tag:'AI原创短篇·一话完结',rating:4.2,score:86},
+{id:8,title:'镜中人',author:'雾中灯',cat:'悬疑',words:'4700字',readTime:'9分钟',heat:'2.3万',desc:'镜子里的自己开始做不同的动作，起初只是细微的差异，直到有一天它冲她笑了。',cover:7,tag:'AI原创短篇·一话完结',rating:4.8,score:96},
+{id:9,title:'最后一局',author:'棋中仙',cat:'都市',words:'4300字',readTime:'8分钟',heat:'1.8万',desc:'退休棋手在公园里遇到一个少年，下了一盘改变两人命运的棋。',cover:8,tag:'AI原创短篇·一话完结',rating:4.5,score:90},
+{id:10,title:'人间蒸发',author:'寒夜烛',cat:'悬疑',words:'5800字',readTime:'11分钟',heat:'2.6万',desc:'三个互不相识的人，同一天在同一座城市消失。唯一的线索是他们都收到了同一封邮件。',cover:9,tag:'AI原创短篇·一话完结',rating:4.6,score:92},
+{id:11,title:'归途',author:'晚风吟',cat:'言情',words:'3600字',readTime:'7分钟',heat:'9300',desc:'异国他乡的机场，她遇到了十年前不告而别的初恋。十小时的航班，他们终于把话说完了。',cover:10,tag:'AI原创短篇·一话完结',rating:4.3,score:88},
+{id:12,title:'代码幽灵',author:'铁星河',cat:'科幻',words:'5400字',readTime:'10分钟',heat:'1.4万',desc:'程序员发现代码库中有一段没人写过的代码，运行后输出了他已故母亲的留言。',cover:11,tag:'AI原创短篇·一话完结',rating:4.7,score:94},
+{id:13,title:'烽火家书',author:'折扇先生',cat:'历史',words:'4100字',readTime:'8分钟',heat:'4300',desc:'一封寄不出的家书，在战火中辗转了四十年。当它终于到达时，收信人的孙子打开了它。',cover:12,tag:'AI原创短篇·一话完结',rating:4.2,score:84},
+{id:14,title:'雨夜来客',author:'夜行风',cat:'都市',words:'3200字',readTime:'6分钟',heat:'6800',desc:'暴雨夜，一个陌生人敲门借电话。他打完电话后说了一句：谢谢你，我们不会再见了。',cover:13,tag:'AI原创短篇·一话完结',rating:4.4,score:86},
+{id:15,title:'剑意',author:'剑归宗',cat:'武侠',words:'4500字',readTime:'9分钟',heat:'1.1万',desc:'师父说剑意不可传，但他用一生去悟。直到师父离世那天，他终于听懂了风声。',cover:14,tag:'AI原创短篇·一话完结',rating:4.5,score:92},
+{id:16,title:'时间商店',author:'雾中灯',cat:'科幻',words:'5900字',readTime:'12分钟',heat:'2.1万',desc:'巷子深处有一家可以买卖时间的商店。她用十年寿命换回了母亲最后一天的清醒。',cover:15,tag:'AI原创短篇·一话完结',rating:4.8,score:96}
 ];
 
 const STORIES={
@@ -1487,7 +1487,7 @@ function toggleShelfItem(n){if(inShelf(n.id)){shelf=shelf.filter(s=>s.id!==n.id|
 function isRead(id){return readSet.includes(id)}
 function markRead(id){if(!isRead(id)){readSet.push(id);saveRead()}}
 function getNovel(id){return NOVELS.find(n=>String(n.id)===String(id)||n.id===parseInt(id))}
-function coverHTML(n){const patterns=['◈','◇','△','☽','☆','✦','❖','⊛','◈','◇','△','☽','☆','✦','❖','⊛'];return'<div class="cover-placeholder" style="background:'+COVER_COLORS[n.cover%COVER_COLORS.length]+'"><div style="font-size:28px;opacity:0.3;margin-bottom:4px">'+patterns[n.cover%patterns.length]+'</div><div style="font-size:14px;font-weight:700;line-height:1.3">'+(n.title.length>6?n.title.slice(0,6)+'…':n.title)+'</div><div style="font-size:10px;opacity:0.7;margin-top:3px">'+n.cat+'</div></div>'}
+function coverHTML(n){const patterns=['◈','','','☽','','✦','❖','⊛','◈','','','☽','','✦','❖','⊛'];return'<div class="cover-placeholder" style="background:'+COVER_COLORS[n.cover%COVER_COLORS.length]+'"><div style="font-size:28px;opacity:0.3;margin-bottom:4px">'+patterns[n.cover%patterns.length]+'</div><div style="font-size:14px;font-weight:700;line-height:1.3">'+(n.title.length>6?n.title.slice(0,6)+'…':n.title)+'</div><div style="font-size:10px;opacity:0.7;margin-top:3px">'+n.cat+'</div></div>'}
 
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1549,8 +1549,8 @@ function novelCardHTML(n,idx){
       '<div style="font-size:12px;color:#888;margin-bottom:8px">'+author+' · '+cat+'</div>'+
       (descText?('<div style="font-size:13px;color:#666;line-height:1.55;margin-bottom:10px;min-height:20px">'+descText+'</div>'):'')+
       '<div style="display:flex;align-items:center;justify-content:space-between">'+
-        '<div style="font-size:12px;color:#aaa">📖 '+wc+' 字 · ⏱ '+rt+(timeText?' · '+timeText:'')+'</div>'+
-        '<button onclick="event.stopPropagation();openReader(\''+n.id+'\')" style="background:linear-gradient(135deg,#4A6FA5,#6B8FC5);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">阅读全文</button>'+
+        '<div style="font-size:12px;color:#aaa">� '+wc+' 字 · ⏱ '+rt+(timeText?' · '+timeText:'')+'</div>'+
+        '<button onclick="event.stopPropagation();openReader(\''+n.id+'\')" style="background:linear-gradient(135deg,#4A6FA5,#6B8FC5);color:#fff;border:none;border-radius:16px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0">去阅读</button>'+
       '</div>'+
     '</div>'+
   '</div>';
@@ -1562,7 +1562,7 @@ function renderHome(){
   var bannerNovels=[NOVELS[0],NOVELS[3],NOVELS[15]].filter(Boolean);
   var bannerColors=['linear-gradient(135deg,#4A6FA5,#6B8FC5)','linear-gradient(135deg,#C04848,#D4726A)','linear-gradient(135deg,#834D9B,#A56CC1)'];
   c.innerHTML='<div style="padding:14px 16px 4px">'+
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:36px;height:36px;background:linear-gradient(135deg,#4A6FA5,#6B8FC5);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700">墨</div><div><div style="font-size:16px;font-weight:700;color:#222;line-height:1.2">墨香阁</div><div style="font-size:11px;color:#999;margin-top:2px">原创短篇 · 一话完结 📖</div></div></div>'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="width:36px;height:36px;background:linear-gradient(135deg,#4A6FA5,#6B8FC5);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700">墨</div><div><div style="font-size:16px;font-weight:700;color:#222;line-height:1.2">墨香阁</div><div style="font-size:11px;color:#999;margin-top:2px">原创短篇 · 一话完结 �</div></div></div>'+
     '<div id="banner-wrap" style="border-radius:14px;overflow:hidden;height:130px;position:relative;margin-bottom:14px">'+
       bannerNovels.map(function(n,i){return '<div class="banner-slide '+(i===0?'active':'')+'" onclick="openDetail('+n.id+')" style="width:100%;height:100%;position:absolute;top:0;left:0;opacity:'+(i===0?1:0)+';transition:opacity .6s;display:flex;background:'+bannerColors[i%bannerColors.length]+'"><div style="position:relative;z-index:1;padding:18px;display:flex;flex-direction:column;justify-content:center;color:#fff;width:100%"><div style="font-size:17px;font-weight:700;margin-bottom:4px;text-shadow:0 1px 4px rgba(0,0,0,.2);line-height:1.3">'+n.title+'</div><div style="font-size:12px;opacity:.9;text-shadow:0 1px 4px rgba(0,0,0,.2)">'+(n.cat||'原创')+' · '+n.author+' · '+(n.readTime||(n.words?Math.ceil(n.words/300)+'分钟':'1分钟'))+'</div></div></div>';}).join('')+
     '<div style="position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2">'+bannerNovels.map(function(_,i){return '<div style="width:'+(i===0?16:6)+'px;height:6px;border-radius:3px;background:'+(i===0?'#fff':'rgba(255,255,255,0.5)')+'"></div>';}).join('')+'</div>'+
@@ -1611,7 +1611,7 @@ function renderBookstore(){
     const sorted=[...NOVELS].sort((a,b)=>{const p=h=>{if(h.includes('万'))return parseFloat(h);return 0};return p(b.heat)-p(a.heat)});
     c.innerHTML='<div class="rank-panel"><div class="section"><div class="section-header"><span class="section-title">推荐榜</span></div><div class="rank-list">'+sorted.map((n,i)=>'<div class="rank-item" onclick="openDetail('+n.id+')"><div class="rank-num '+(i<3?'top3':'')+'">'+(i+1)+'</div><div class="rank-info"><div class="rank-title">'+n.title+'</div><div class="rank-author">'+n.author+' · '+n.cat+' · '+n.readTime+'</div></div><div class="rank-heat">'+n.heat+'</div></div>').join('')+'</div></div></div>'+
       '<div class="section"><div class="section-header"><span class="section-title">热门标签</span></div><div class="tag-cloud">'+HOT_TAGS.map((t,i)=>'<span class="'+(i<4?'hot':'')+'" onclick="searchByKeyword(\''+t+'\')">'+t+'</span>').join('')+'</div></div>'+
-      '<div class="book-square"><div class="section-header"><span class="section-title">书荒广场</span></div>'+BOOK_SQUARE.map(s=>'<div class="square-item"><div class="square-user"><div class="avatar" style="background:'+s.color+'">'+s.avatar+'</div><span class="name">'+s.user+'</span><span class="time">'+s.time+'</span></div><div class="square-text">'+s.text+'</div><div class="square-actions"><button onclick="toast(\'已点赞\')">👍 '+s.likes+'</button><button onclick="toast(\'回复功能开发中\')">💬 '+s.replies+'</button></div></div>').join('')+'</div>'+
+      '<div class="book-square"><div class="section-header"><span class="section-title">书荒广场</span></div>'+BOOK_SQUARE.map(s=>'<div class="square-item"><div class="square-user"><div class="avatar" style="background:'+s.color+'">'+s.avatar+'</div><span class="name">'+s.user+'</span><span class="time">'+s.time+'</span></div><div class="square-text">'+s.text+'</div><div class="square-actions"><button onclick="toast(\'已点赞\')">� '+s.likes+'</button><button onclick="toast(\'回复功能开发中\')">� '+s.replies+'</button></div></div>').join('')+'</div>'+
       '<div class="section"><div class="section-header"><span class="section-title">新书专区</span></div><div class="novel-list-h">'+getNewestNovels(4).map(n=>'<div class="novel-card" onclick="openDetail(\''+n.id+'\')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-title">'+n.title+'</div><div class="novel-meta">'+n.readTime+'</div></div>').join('')+'</div></div>'+
       '<div class="section"><div class="section-header"><span class="section-title">完本精选</span></div><div class="novel-list-h">'+NOVELS.filter(n=>n.score>=92).map(n=>'<div class="novel-card" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-title">'+n.title+'</div><div class="novel-meta">评分 '+n.rating+'</div></div>').join('')+'</div></div>';
   }else if(currentBTab==='complete'){
@@ -1636,12 +1636,12 @@ function toggleNightMode(){
 }
 
 function renderCategory(){
-  const catData=[{name:'玄幻',emoji:'⚔️',count:3},{name:'都市',emoji:'🏙️',count:4},{name:'言情',emoji:'💕',count:2},{name:'悬疑',emoji:'🔍',count:4},{name:'科幻',emoji:'🚀',count:3},{name:'武侠',emoji:'🗡️',count:2},{name:'历史',emoji:'📜',count:2}];
+  const catData=[{name:'玄幻',emoji:'⚔️',count:3},{name:'都市',emoji:'🏙️',count:4},{name:'言情',emoji:'�',count:2},{name:'悬疑',emoji:'�',count:4},{name:'科幻',emoji:'�',count:3},{name:'武侠',emoji:'�️',count:2},{name:'历史',emoji:'�',count:2}];
   document.getElementById('category-content').innerHTML='<div class="cat-grid">'+catData.map(c=>'<div class="cat-card" onclick="filterCat(\''+c.name+'\');showPage(\'home\')"><div class="emoji">'+c.emoji+'</div><div class="name">'+c.name+'</div><div class="count">'+c.count+'篇</div></div>').join('')+'</div><div class="section"><div class="section-header"><span class="section-title">全部作品</span></div><div class="novel-list-v">'+NOVELS.map(n=>'<div class="novel-item" onclick="openDetail('+n.id+')"><div class="novel-cover">'+coverHTML(n)+'</div><div class="novel-info"><div class="novel-title">'+n.title+'<span class="ai-badge">AI</span><span class="one-shot">一话完结</span></div><div class="novel-desc">'+n.desc+'</div><div class="novel-tags"><span>'+n.cat+'</span><span>'+n.words+'</span></div><div class="novel-stats"><span>'+n.readTime+'</span><span>'+n.heat+'热度</span></div></div></div>').join('')+'</div></div>';
 }
 
 function renderCommunity(){
-  document.getElementById('community-content').innerHTML='<div class="section"><div class="section-header"><span class="section-title">书友动态</span></div></div>'+COMMUNITY_POSTS.map(p=>'<div class="community-item"><div class="community-user"><div class="avatar" style="background:'+p.color+'">'+p.avatar+'</div><div class="info"><div class="name">'+p.user+'</div><div class="time">'+p.time+'</div></div></div><div class="community-text">'+p.text+'</div><div class="community-meta"><span onclick="toast(\'已点赞\')">👍 '+p.likes+'</span><span onclick="toast(\'评论功能开发中\')">💬 '+p.comments+'</span><span onclick="toast(\'已分享\')">📤 分享</span></div></div>').join('');
+  document.getElementById('community-content').innerHTML='<div class="section"><div class="section-header"><span class="section-title">书友动态</span></div></div>'+COMMUNITY_POSTS.map(p=>'<div class="community-item"><div class="community-user"><div class="avatar" style="background:'+p.color+'">'+p.avatar+'</div><div class="info"><div class="name">'+p.user+'</div><div class="time">'+p.time+'</div></div></div><div class="community-text">'+p.text+'</div><div class="community-meta"><span onclick="toast(\'已点赞\')">� '+p.likes+'</span><span onclick="toast(\'评论功能开发中\')">� '+p.comments+'</span><span onclick="toast(\'已分享\')">� 分享</span></div></div>').join('');
 }
 
 function switchShelfGroup(group){
@@ -1661,7 +1661,7 @@ function renderShelf(){
     displayShelf=shelf.filter(s=>downloaded.includes(s.id));
   }
   document.getElementById('shelf-count').textContent=displayShelf.length+'篇';
-  if(!displayShelf.length){c.innerHTML='<div class="momo-empty"><p>书架还空空的，快去发现好故事吧！</p><button onclick="showPage(\'home\')">去逛逛</button></div>';return}
+  if(!displayShelf.length){c.innerHTML='<div class="momo-empty"><p>还没有收藏的故事哦 →</p><button onclick="showPage(\'home\')">去发现好故事</button></div>';return}
   c.innerHTML='<div class="shelf-grid">'+displayShelf.map(s=>{const n=getNovel(s.id)||s;return'<div class="shelf-item" onclick="openDetail('+s.id+')"><div class="novel-cover">'+coverHTML(n)+(isOffline(s.id)?'<div class="offline-badge">已下载</div>':'')+'</div><div class="novel-title">'+n.title+'</div><div class="last-read">'+(isRead(s.id)?'已读':'未读')+'</div></div>'}).join('')+'</div>'
 }
 
@@ -1737,8 +1737,8 @@ function openDetail(nid){
         '<div style="text-align:center;padding:10px 4px;background:#FAFAFA;border-radius:10px"><div style="font-size:16px;font-weight:700;color:#4A6FA5">'+rating+'</div><div style="font-size:11px;color:#888;margin-top:2px">评分</div></div>'+
       '</div>'+
       '<div class="detail-actions" style="display:flex;gap:10px;margin-top:14px;margin-bottom:4px">'+
-        '<button onclick="toggleShelf(\''+n.id+'\')" style="flex:0 0 44px;padding:12px;background:#f5f5f5;border-radius:12px;font-size:18px;cursor:pointer;border:none">'+(isS?'📚':'☆')+'</button>'+
-        '<button onclick="window.open(\'https://fanqienovel.com/\',\'_blank\')" style="flex:1;padding:13px;background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:22px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 10px rgba(255,71,87,0.25)">🍅 去番茄阅读</button>'+
+        '<button onclick="toggleShelf(\''+n.id+'\')" style="flex:0 0 44px;padding:12px;background:#f5f5f5;border-radius:12px;font-size:18px;cursor:pointer;border:none">'+(isS?'�':'')+'</button>'+
+        '<button onclick="window.open(\'https://fanqienovel.com/\',\'_blank\')" style="flex:1;padding:13px;background:linear-gradient(135deg,#FF4757,#FF6B7A);color:#fff;border:none;border-radius:22px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 10px rgba(255,71,87,0.25)">去阅读</button>'+
       '</div>'+
     '</div>'+
     '<div style="background:#fff;padding:6px 16px 16px;margin-top:6px">'+
@@ -1746,13 +1746,13 @@ function openDetail(nid){
       '<div style="font-size:14px;color:#555;line-height:1.75;background:#FAFBFC;padding:12px 14px;border-radius:10px">'+(desc||'暂无简介')+'</div>'+
     '</div>'+
     (paragraphs.length?('<div style="background:#F5ECD7;padding:18px 18px 24px;margin-top:6px">'+
-      '<div style="font-size:13px;font-weight:600;color:#6A4E2A;margin-bottom:10px;padding-left:2px">📖 正文预览</div>'+
+      '<div style="font-size:13px;font-weight:600;color:#6A4E2A;margin-bottom:10px;padding-left:2px">� 正文预览</div>'+
       paragraphs.slice(0,6).map(function(p){return '<p style="font-size:17px;color:#3A2E1D;line-height:1.85;text-indent:2em;margin:0 0 14px 0">'+p+'</p>';}).join('')+
-      (paragraphs.length>6?'<div onclick="openReader(\''+n.id+'\')" style="text-align:center;padding:12px;color:#8B6B3C;font-size:13px;font-weight:500;cursor:pointer;border-top:1px dashed rgba(139,107,60,0.3);margin-top:10px">继续阅读全文 →</div>':'')+
+      (paragraphs.length>6?'<div onclick="openReader(\''+n.id+'\')" style="text-align:center;padding:12px;color:#8B6B3C;font-size:13px;font-weight:500;cursor:pointer;border-top:1px dashed rgba(139,107,60,0.3);margin-top:10px">继续去阅读 →</div>':'')+
     '</div>'):'')+
     '<div style="background:#fff;padding:16px;margin-top:6px">'+
       '<div style="font-size:14px;font-weight:700;color:#222;margin-bottom:10px">读者评论</div>'+
-      '<div style="color:#888;font-size:13px;text-align:center;padding:16px 8px;background:#FAFBFC;border-radius:10px">暂无评论，快来抢沙发吧~</div>'+
+      '<div style="color:#888;font-size:13px;text-align:center;padding:16px 8px;background:#FAFBFC;border-radius:10px">暂无评论，快来抢沙发吧~</div></div>'+
     '</div>'+
     '<div style="height:20px"></div>';
   showPage('detail');
@@ -1993,7 +1993,7 @@ async function loadMyWorks(){
   myWorksCache=works;
   if(countEl)countEl.textContent=('共 '+works.length+' 篇');
   if(!works.length){
-    listEl.innerHTML='<div style="text-align:center;padding:40px 10px;background:#fff;border-radius:12px"><div style="font-size:40px;margin-bottom:8px">📖</div><div style="font-size:14px;color:#888;margin-bottom:14px">还没有作品，快去创作吧</div></div>';
+    listEl.innerHTML='<div style="text-align:center;padding:40px 10px;background:#fff;border-radius:12px"><div style="font-size:40px;margin-bottom:8px">�</div><div style="font-size:14px;color:#888;margin-bottom:14px">还没有作品，快去创作吧</div></div>';
     return;
   }
   var html='';
@@ -2087,11 +2087,11 @@ function renderCreatorIncome(){
 }
 
 function renderCreatorTools(){
-  document.getElementById('creator-content').innerHTML='<div class="ai-tool-grid"><div class="ai-tool-card" onclick="toast(\'AI续写功能开发中\')"><div class="emoji">✍️</div><h4>AI续写</h4><p>输入开头，AI帮你续写</p></div><div class="ai-tool-card" onclick="toast(\'AI润色功能开发中\')"><div class="emoji">✨</div><h4>AI润色</h4><p>优化文笔，提升表达</p></div><div class="ai-tool-card" onclick="toast(\'灵感助手开发中\')"><div class="emoji">💡</div><h4>灵感助手</h4><p>随机生成故事灵感</p></div><div class="ai-tool-card" onclick="toast(\'字数统计工具\')"><div class="emoji">📊</div><h4>字数统计</h4><p>实时统计写作数据</p></div></div>';
+  document.getElementById('creator-content').innerHTML='<div class="ai-tool-grid"><div class="ai-tool-card" onclick="toast(\'AI续写功能开发中\')"><div class="emoji">✍️</div><h4>AI续写</h4><p>输入开头，AI帮你续写</p></div><div class="ai-tool-card" onclick="toast(\'AI润色功能开发中\')"><div class="emoji">✨</div><h4>AI润色</h4><p>优化文笔，提升表达</p></div><div class="ai-tool-card" onclick="toast(\'灵感助手开发中\')"><div class="emoji">�</div><h4>灵感助手</h4><p>随机生成故事灵感</p></div><div class="ai-tool-card" onclick="toast(\'字数统计工具\')"><div class="emoji">�</div><h4>字数统计</h4><p>实时统计写作数据</p></div></div>';
 }
 
 function renderCreatorMore(){
-  document.getElementById('creator-content').innerHTML='<div class="checkin-card"><h4>每日打卡</h4><div class="checkin-calendar"><div class="checkin-day checked">1</div><div class="checkin-day checked">2</div><div class="checkin-day checked">3</div><div class="checkin-day today">4</div><div class="checkin-day">5</div><div class="checkin-day">6</div><div class="checkin-day">7</div></div><button class="checkin-btn" onclick="toast(\'今日已打卡\')">今日已打卡</button></div><div class="copyright-notice"><div class="icon">📋</div><div><h4>版权保护</h4><p>你的原创作品受平台版权保护，未经授权不得转载。</p></div></div>';
+  document.getElementById('creator-content').innerHTML='<div class="checkin-card"><h4>每日打卡</h4><div class="checkin-calendar"><div class="checkin-day checked">1</div><div class="checkin-day checked">2</div><div class="checkin-day checked">3</div><div class="checkin-day today">4</div><div class="checkin-day">5</div><div class="checkin-day">6</div><div class="checkin-day">7</div></div><button class="checkin-btn" onclick="toast(\'今日已打卡\')">今日已打卡</button></div><div class="copyright-notice"><div class="icon">�</div><div><h4>版权保护</h4><p>你的原创作品受平台版权保护，未经授权不得转载。</p></div></div>';
 }
 
 function formatTime(ts){
